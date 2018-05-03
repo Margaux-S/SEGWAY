@@ -413,6 +413,12 @@ void Affichage(void *arg){
 }
 
 void Communication_Android (void *arg){
+    
+    rt_printf("Thread ANDROID : Debut de l'éxecution de periodique à 100 Hz\n");
+    rt_task_set_periodic(NULL, TM_NOW, 10000000);
+
+    log_task_entered();
+    
     float puissance = 0.0;
     float angle = 0.0;
     int socket_desc , client_sock , c , read_size, sens;
