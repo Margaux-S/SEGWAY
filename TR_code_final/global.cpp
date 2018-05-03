@@ -44,6 +44,7 @@ RT_TASK th_Surveillance_Batterie;
 RT_TASK th_Envoyer; 
 RT_TASK th_Presence_User; 
 RT_TASK th_Arret_Urgence;
+RT_TASK th_Communication_Android;
 
 /* Fonctions *******************************/
 
