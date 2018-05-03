@@ -89,6 +89,7 @@ extern RT_TASK th_Surveillance_Batterie;
 extern RT_TASK th_Envoyer; 
 extern RT_TASK th_Presence_User; 
 extern RT_TASK th_Arret_Urgence; 
+extern RT_TASK th_Communication_Android;
 
 /* Fonctions *******************************/
 info_float info_float_new(char lab, float dat);
