@@ -129,6 +129,12 @@ void initStruct(void) {
 		rt_printf("Error task create: %s\n", strerror(-err));
 		exit(EXIT_FAILURE);
 	}
+        
+        if (err = rt_task_create(&th_Communication_Android, "Communication_Android", 0, PRIORITY_TH_COMMUNICATION_ANDROID, 0)){
+		rt_printf("Error task create: %s\n", strerror(-err));
+		exit(EXIT_FAILURE);
+	}
+        
 
     rt_printf("Fin init tache\n");
 
@@ -192,6 +198,11 @@ void startTasks() {
 		rt_printf("Error task start: %s\n", strerror(-err));
 		exit(EXIT_FAILURE);
 	}
+        
+        if (err = rt_task_start(&th_Communication_Android, &Communication_Android(), NULL)){
+		rt_printf("Error task start: %s\n", strerror(-err));
+		exit(EXIT_FAILURE);
+	}
 
 }
 void deleteTasks() {
@@ -210,6 +221,7 @@ void deleteTasks() {
 
 	rt_task_delete(&th_Arret_Urgence);
 
+        rt_task_delete(&th_Communication_Android);
 
 }
 

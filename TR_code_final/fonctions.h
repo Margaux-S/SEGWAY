@@ -21,6 +21,7 @@ void Surveillance_Batterie(void * arg);
 void Communication(void * arg);
 void Affichage(void * arg);
 void Arret_Urgence(void *arg);
+void Communication_Android(void *arg);
 
 #ifdef	__cplusplus
 }
