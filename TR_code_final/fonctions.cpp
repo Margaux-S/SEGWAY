@@ -463,8 +463,8 @@ void Communication_Android (void *arg){
     }
     puts("Connection accepted");
 	       
-    rt_task_suspend(&Asservissement);
-    rt_task_suspend(&Arret_Urgence);
+    rt_task_suspend(&th_Asservissement);
+    rt_task_suspend(&th_Arret_Urgence);
     rt_mutex_acquire(&var_mutex_arret, TM_INFINITE);
     log_mutex_acquired(&var_mutex_arret);
 
@@ -548,8 +548,8 @@ void Communication_Android (void *arg){
         {
             perror("recv failed");
         }
-        rt_task_resume(&Asservissement);
-        rt_task_resume(&Arret_Urgence);
+        rt_task_resume(&th_Asservissement);
+        rt_task_resume(&th_Arret_Urgence);
     }
 
 }
