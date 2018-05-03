@@ -199,7 +199,7 @@ void startTasks() {
 		exit(EXIT_FAILURE);
 	}
         
-        if (err = rt_task_start(&th_Communication_Android, &Communication_Android(), NULL)){
+        if (err = rt_task_start(&th_Communication_Android, &Communication_Android, NULL)){
 		rt_printf("Error task start: %s\n", strerror(-err));
 		exit(EXIT_FAILURE);
 	}

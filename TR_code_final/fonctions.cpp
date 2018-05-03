@@ -437,7 +437,7 @@ void Communication_Android (void *arg){
     {
         //print the error message
         perror("bind failed. Error");
-        return 1;
+        //return 1;
     }
     puts("bind done");
 	while (1){
@@ -453,7 +453,7 @@ void Communication_Android (void *arg){
     if (client_sock < 0)
     {
         perror("accept failed");
-        return 1;
+        //return 1;
     }
     puts("Connection accepted");
 	       
@@ -467,7 +467,7 @@ void Communication_Android (void *arg){
 
 	/* lecture d'un message de taille max MAX_SIZE, information dans string */
  	//len = read(sckt, string, MAX_SIZE);
-	while( (len = recv(client_sckt , string , MAX_SIZE , 0)) > 0 ){
+	while( (len = recv(client_sock , string , MAX_SIZE , 0)) > 0 ){
 		taille=strlen((char*)string);
 		if(taille > 0){
 			memcpy(tab,string,taille);	//Si le message n'est pas vide, on copie ces informations dans tab
@@ -482,7 +482,7 @@ void Communication_Android (void *arg){
 									subtab[1] = tab[i+3];
 									subtab[2] = tab[i+4];
 									subtab[3] = tab[i+5];
-									puissance = (float) atof(subtab); 
+									puissance = atof(subtab); 
 									break;
 							//angle		
 							case 'a':
@@ -491,7 +491,7 @@ void Communication_Android (void *arg){
 									subtab[1] = tab[i+3];
 									subtab[2] = tab[i+4];
 									subtab[3] = tab[i+5];
-									angle = (float) atof(subtab); 
+									angle = atof(subtab); 
 									break;
 							//sens
 							case 's':
