@@ -19,7 +19,7 @@ void Asservissement(void *arg) /* OK */
 	log_task_entered();
 
 	while (1) {
-	    rt_printf("Thread Asservissement \n");
+	    //rt_printf("Thread Asservissement \n");
 		rt_task_wait_period(NULL);
 
 		rt_mutex_acquire(&var_mutex_etat_com, TM_INFINITE);
@@ -89,7 +89,7 @@ void Asservissement(void *arg) /* OK */
 	log_task_entered();
 
 	while (1) {
-	    rt_printf("Thread Presence_user \n");
+	    //rt_printf("Thread Presence_user \n");
 		rt_task_wait_period(NULL);
 
 		rt_mutex_acquire(&var_mutex_etat_com, TM_INFINITE);
@@ -131,7 +131,7 @@ void Asservissement(void *arg) /* OK */
 	log_task_entered();
 
 	while (1) {
-    	rt_printf("Thread Batterie \n");
+    	//rt_printf("Thread Batterie \n");
 		rt_task_wait_period(NULL);
 
 		rt_mutex_acquire(&var_mutex_etat_com, TM_INFINITE);
@@ -199,7 +199,7 @@ void Communication(void *arg)
 	log_task_entered();
 
 	while (1) {
-    		rt_printf("Thread Communication \n");
+    		//rt_printf("Thread Communication \n");
 			rt_task_wait_period(NULL);
 
 			uart0_filestream = init_serial();
@@ -249,7 +249,7 @@ void Arret_Urgence(void *arg){
 	log_task_entered();
 
 	while(1){
-		rt_printf("Thread Arret \n");
+		//rt_printf("Thread Arret \n");
 
 		log_sem_waiting(&var_sem_arret);
 		rt_sem_p(&var_sem_arret,TM_INFINITE);
@@ -284,7 +284,7 @@ void Envoyer(void *arg){
 	log_task_entered();
 
 	while(1){
-		rt_printf("Thread Envoyer \n");
+		//rt_printf("Thread Envoyer \n");
 		rt_task_wait_period(NULL);
 
 		message_stm m;
@@ -336,7 +336,7 @@ void Affichage(void *arg){
 	log_task_entered();
 
 	while(1){
-		rt_printf("Thread Affichage \n");
+		//rt_printf("Thread Affichage \n");
 		rt_task_wait_period(NULL);
 
 		str = (unsigned char*)malloc(56* sizeof(unsigned char)); // 56 = (n * 7 ) avec n nombre de fonctions "add_info"
