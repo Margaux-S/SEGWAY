@@ -463,7 +463,15 @@ void Communication_Android (void *arg){
     }
     puts("Connection accepted");
 	       
-        
+    rt_task_suspend(&Asservissement);
+    rt_task_suspend(&Arret_Urgence);
+    rt_mutex_acquire(&var_mutex_arret, TM_INFINITE);
+    log_mutex_acquired(&var_mutex_arret);
+
+    arret = 0;
+
+    rt_mutex_release(&var_mutex_arret);
+    log_mutex_released(&var_mutex_arret);
         int MAX_SIZE = 1024;
 	int len,i,taille;
 	char tab[MAX_SIZE];
@@ -515,6 +523,14 @@ void Communication_Android (void *arg){
 			} //for
 		} //if taille
 		printf("Puissance : %f \nAngle : %f \nSens : %d \n", puissance, angle, sens);
+                puissance = k1*30*puissance;
+                rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
+                log_mutex_acquired(&var_mutex_consigne_couple);
+
+                consigne_couple.set_consigne(puissance);
+
+                rt_mutex_release(&var_mutex_consigne_couple);
+                log_mutex_released(&var_mutex_consigne_couple);
 	} //while 
         
         
@@ -523,16 +539,18 @@ void Communication_Android (void *arg){
         
         
         
-    if(read_size == 0)
-    {
-        puts("Client disconnected");
-        fflush(stdout);
+        if(read_size == 0)
+        {
+            puts("Client disconnected");
+            fflush(stdout);
+        }
+        else if(read_size == -1)
+        {
+            perror("recv failed");
+        }
+        rt_task_resume(&Asservissement);
+        rt_task_resume(&Arret_Urgence);
     }
-    else if(read_size == -1)
-    {
-        perror("recv failed");
-    }
-	}
 
 }
 
