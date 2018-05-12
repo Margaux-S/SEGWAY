@@ -414,9 +414,7 @@ void Affichage(void *arg){
 
 void Communication_Android (void *arg){
     
-    rt_printf("Thread ANDROID : Debut de l'éxecution de periodique à 100 Hz\n");
-    rt_task_set_periodic(NULL, TM_NOW, 10000000);
-
+    rt_printf("Thread ANDROID : Debut de l'éxecution\n");
     log_task_entered();
     
     float puissance = 0.0;
@@ -425,6 +423,8 @@ void Communication_Android (void *arg){
     struct sockaddr_in server , client;
     char client_message[2000];
 
+    
+    socket_desc = init_socket_server();
     //Create socket
     socket_desc = socket(AF_INET , SOCK_STREAM , 0);
     if (socket_desc == -1)
