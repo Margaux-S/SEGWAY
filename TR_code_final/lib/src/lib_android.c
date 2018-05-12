@@ -31,7 +31,7 @@ void read_socket_values(int sckt, int client_sckt, float puissance, float angle,
 									subtab[1] = tab[i+3];
 									subtab[2] = tab[i+4];
 									subtab[3] = tab[i+5];
-									puissance = (float) atof(subtab); 
+									puissance = atof(subtab); 
 									break;
 							//angle		
 							case 'a':
@@ -40,7 +40,7 @@ void read_socket_values(int sckt, int client_sckt, float puissance, float angle,
 									subtab[1] = tab[i+3];
 									subtab[2] = tab[i+4];
 									subtab[3] = tab[i+5];
-									angle = (float) atof(subtab); 
+									angle = atof(subtab); 
 									break;
 							//sens
 							case 's':
@@ -111,7 +111,6 @@ void update_values(int socket_desc, float puissance, float angle, int sens) {
     if (client_sock < 0)
     {
         perror("accept failed");
-        return 1;
     }
     puts("Connection accepted");
 
