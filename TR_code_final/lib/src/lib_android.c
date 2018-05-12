@@ -9,9 +9,9 @@
 void read_socket_values(int sckt, int client_sckt, float puissance, float angle, int sens){
 	int MAX_SIZE = 1024;
 	int len,i,taille;
-	unsigned char tab[MAX_SIZE];
-	unsigned char subtab[3];
-	unsigned char string[MAX_SIZE];
+	char tab[MAX_SIZE];
+	char subtab[3];
+	char string[MAX_SIZE];
 	float data;
 
 	/* lecture d'un message de taille max MAX_SIZE, information dans string */
