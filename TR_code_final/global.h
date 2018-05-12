@@ -50,6 +50,7 @@ extern int etat_com;
 extern int etat_reception;
 extern int presence_user;
 extern int c;
+extern int etat_android;
 
 typedef struct
 {
@@ -73,6 +74,7 @@ extern RT_MUTEX var_mutex_batterie;
 extern RT_MUTEX var_mutex_presence_user ;
 extern RT_MUTEX var_mutex_etat_reception;
 extern RT_MUTEX var_mutex_arret ;
+extern RT_MUTEX var_mutex_etat_android ;
 
 /* SEMAPHORES ******************************/
 extern RT_SEM var_sem_arret;

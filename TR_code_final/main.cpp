@@ -77,6 +77,11 @@ void initStruct(void) {
 		exit(EXIT_FAILURE);
 	}
 
+        if(err = rt_mutex_create(&var_mutex_etat_android, "mutex_etat_android")){
+		rt_printf("Error mutex create: %s\n", strerror(-err));
+		exit(EXIT_FAILURE);
+	}
+        
 	rt_printf("Fin init mutex\n");
 
 	/* Creation des semaphores */

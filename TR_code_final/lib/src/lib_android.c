@@ -6,6 +6,8 @@
 
 #include "../inc/lib_android.h"
 
+
+//Permet de lire les messages reçus et de mettre à jour les variable de puissance, d'angle et de sens
 void read_socket_values(int sckt, int client_sckt, float puissance, float angle, int sens){
 	int MAX_SIZE = 1024;
 	int len,i,taille;
@@ -57,7 +59,18 @@ void read_socket_values(int sckt, int client_sckt, float puissance, float angle,
 					}//<\n
 			} //for
 		} //if taille
-		printf("Puissance : %f \nAngle : %f \nSens : %d \n", puissance, angle, sens);
+                if (sens == -1){
+                    puissance = -puissance;
+                }
+                //Mets à jour la consigne à envoyer au STM32
+                rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
+                log_mutex_acquired(&var_mutex_consigne_couple);
+
+                consigne_couple.set_consigne(puissance*10);
+
+                rt_mutex_release(&var_mutex_consigne_couple);
+                log_mutex_released(&var_mutex_consigne_couple);    
+
 	} //while 
 }
 
@@ -115,6 +128,7 @@ void update_values(int socket_desc, float puissance, float angle, int sens) {
     puts("Connection accepted");
 
     read_socket_values(socket_desc, client_sock, puissance, angle, sens);
+    
     if(read_size == 0)
     {
         puts("Client disconnected");

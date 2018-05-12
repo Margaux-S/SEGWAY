@@ -13,6 +13,7 @@ int etat_reception = 0;
 int status = 0;
 int etat_com = 0;
 int presence_user = 1;
+int etat_android = 0;
 Angles etat_angle;
 Battery batterie;
 Consigne consigne_couple;
@@ -28,6 +29,7 @@ RT_MUTEX var_mutex_etat_reception;
 RT_MUTEX var_mutex_batterie;
 RT_MUTEX var_mutex_presence_user ;
 RT_MUTEX var_mutex_arret ;
+RT_MUTEX var_mutex_etat_android ;
 
 /* SEMAPHORES ******************************/
 RT_SEM var_sem_arret;
