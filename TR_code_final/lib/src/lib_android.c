@@ -107,7 +107,7 @@ void update_values(int socket_desc, float puissance, float angle, int sens) {
     c = sizeof(struct sockaddr_in);
 
     //accept connection from an incoming client
-    client_sock = accept(socket_desc, (struct sockaddr *)&client, (socklen_t*)&c);
+    client_sock = accept(socket_desc, (struct sockaddr *)&client , (socklen_t*)&c);
     if (client_sock < 0)
     {
         perror("accept failed");
