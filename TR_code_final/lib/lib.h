@@ -5,4 +5,5 @@
 #include "inc/lib_monitor.h"
 #include "inc/lib_serial.h"
 #include "inc/lib_msg_GUI.h"
+#include "inc/lib_android.h"
 
