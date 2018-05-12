@@ -97,7 +97,7 @@ int init_socket_server()
 }
 
 void update_values(int socket_desc, float puissance, float angle, int sens) {
-    int client_sock, read_size;
+    int client_sock, read_size, c;
     struct sockaddr_in client;
     //Listen
     listen(socket_desc , 3);
