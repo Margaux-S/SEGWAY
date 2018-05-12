@@ -419,138 +419,20 @@ void Communication_Android (void *arg){
     
     float puissance = 0.0;
     float angle = 0.0;
-    int socket_desc , client_sock , c , read_size, sens;
-    struct sockaddr_in server , client;
-    char client_message[2000];
-
+    int sens = 0;
+    int socket_desc;
     
     socket_desc = init_socket_server();
-    //Create socket
-    socket_desc = socket(AF_INET , SOCK_STREAM , 0);
-    if (socket_desc == -1)
-    {
-        printf("Could not create socket");
+    
+    while (1){
+        
+        update_values(socket_desc, puissance, angle, sens);
+        
     }
-    puts("Socket created");
-
-    //Prepare the sockaddr_in structure
-    server.sin_family = AF_INET;
-    server.sin_addr.s_addr = INADDR_ANY;
-    server.sin_port = htons( 8888 );
-
-    //Bind
-    if( bind(socket_desc,(struct sockaddr *)&server , sizeof(server)) < 0)
-    {
-        //print the error message
-        perror("bind failed. Error");
-        //return 1;
-    }
-    puts("bind done");
-	while (1){
-    //Listen
-    listen(socket_desc , 3);
-
-    //Accept and incoming connection
-    puts("Waiting for incoming connections...");
-    c = sizeof(struct sockaddr_in);
-
-    //accept connection from an incoming client
-    client_sock = accept(socket_desc, (struct sockaddr *)&client, (socklen_t*)&c);
-    if (client_sock < 0)
-    {
-        perror("accept failed");
-        //return 1;
-    }
-    puts("Connection accepted");
-	       
-    rt_task_suspend(&th_Asservissement);
-    rt_task_suspend(&th_Arret_Urgence);
-    rt_mutex_acquire(&var_mutex_arret, TM_INFINITE);
-    log_mutex_acquired(&var_mutex_arret);
-
-    arret = 0;
-
-    rt_mutex_release(&var_mutex_arret);
-    log_mutex_released(&var_mutex_arret);
-        int MAX_SIZE = 1024;
-	int len,i,taille;
-	char tab[MAX_SIZE];
-	char subtab[3];
-	char string[MAX_SIZE];
-	float data;
-
-	/* lecture d'un message de taille max MAX_SIZE, information dans string */
- 	//len = read(sckt, string, MAX_SIZE);
-	while( (len = recv(client_sock , string , MAX_SIZE , 0)) > 0 ){
-		taille=strlen((char*)string);
-		if(taille > 0){
-			memcpy(tab,string,taille);	//Si le message n'est pas vide, on copie ces informations dans tab
-
-			for(i=0 ; i<len ; i++){
-					if((tab[i] == '<')&&(tab[i+6] == '\n')){
-						switch (tab[i+1]){
-							//puissance
-							case 'p':
-									memcpy(&data,&tab[i+2],sizeof(data));
-									subtab[0] = tab[i+2];
-									subtab[1] = tab[i+3];
-									subtab[2] = tab[i+4];
-									subtab[3] = tab[i+5];
-									puissance = atof(subtab); 
-									break;
-							//angle		
-							case 'a':
-									memcpy(&data,&tab[i+2],sizeof(data));
-									subtab[0] = tab[i+2];
-									subtab[1] = tab[i+3];
-									subtab[2] = tab[i+4];
-									subtab[3] = tab[i+5];
-									angle = atof(subtab); 
-									break;
-							//sens
-							case 's':
-									//puts("S \n");
-									memcpy(&data,&tab[i+2],sizeof(data));
-									subtab[0] = tab[i+2];
-									subtab[1] = tab[i+3];
-									subtab[2] = tab[i+4];
-									subtab[3] = tab[i+5];
-									sens = atoi(subtab);
-									break;
-
-						}//case
-					}//<\n
-			} //for
-		} //if taille
-		printf("Puissance : %f \nAngle : %f \nSens : %d \n", puissance, angle, sens);
-                puissance = k1*30*puissance;
-                rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
-                log_mutex_acquired(&var_mutex_consigne_couple);
-
-                consigne_couple.set_consigne(puissance);
-
-                rt_mutex_release(&var_mutex_consigne_couple);
-                log_mutex_released(&var_mutex_consigne_couple);
-	} //while 
+    
         
-        
-        
-        
-        
-        
-        
-        if(read_size == 0)
-        {
-            puts("Client disconnected");
-            fflush(stdout);
-        }
-        else if(read_size == -1)
-        {
-            perror("recv failed");
-        }
-        rt_task_resume(&th_Asservissement);
-        rt_task_resume(&th_Arret_Urgence);
-    }
+     
+    
 
 }
 

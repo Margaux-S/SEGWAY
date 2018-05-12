@@ -14,10 +14,14 @@
 #ifndef LIB_ANDROID_H
 #define LIB_ANDROID_H
 
+#include "../../includes.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+    int init_socket_server();
+    void read_socket_values(int sckt, int client_sckt, float puissance, float angle, int sens);
+    void update_values(int socket_desc, float puissance, float angle, int sens);
 
 
 
