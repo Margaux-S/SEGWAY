@@ -88,6 +88,7 @@ int init_socket_server()
     if (socket_desc == -1)
     {
         printf("Could not create socket");
+        return 1;
     }
     puts("Socket created");
 
@@ -109,7 +110,7 @@ int init_socket_server()
     return 0;
 }
 
-void update_values(int socket_desc, float puissance, float angle, int sens) {
+int update_values(int socket_desc, float puissance, float angle, int sens) {
     int client_sock, read_size, c;
     struct sockaddr_in client;
     //Listen
@@ -124,6 +125,7 @@ void update_values(int socket_desc, float puissance, float angle, int sens) {
     if (client_sock < 0)
     {
         perror("accept failed");
+        return 1;
     }
     puts("Connection accepted");
     rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
@@ -148,12 +150,15 @@ void update_values(int socket_desc, float puissance, float angle, int sens) {
     if(read_size == 0)
     {
         puts("Client disconnected");
-        fflush(stdout);
+        return 1;
+        //fflush(stdout);
     }
     else if(read_size == -1)
     {
         perror("recv failed");
+        return 1;
     }
+    return 0;
 }
 
 

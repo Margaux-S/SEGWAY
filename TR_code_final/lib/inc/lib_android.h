@@ -21,7 +21,7 @@ extern "C" {
 #endif
     int init_socket_server();
     void read_socket_values(int sckt, int client_sckt, float puissance, float angle, int sens);
-    void update_values(int socket_desc, float puissance, float angle, int sens);
+    int update_values(int socket_desc, float puissance, float angle, int sens);
 
 
 
