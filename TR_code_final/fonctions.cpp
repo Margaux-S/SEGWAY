@@ -12,6 +12,7 @@ void Asservissement(void *arg) /* OK */
 	float angle, vit_angulaire, c;
 	int com, android;
 	int uart0_filestream;
+        int noerror = 0;
 
 	rt_printf("Thread Asservissement: Debut de l'exécution de periodique à 50 Hz\n");
 	rt_task_set_periodic(NULL, TM_NOW, 20000000);
@@ -75,11 +76,18 @@ void Asservissement(void *arg) /* OK */
 				rt_mutex_release(&var_mutex_etat_reception);
 				log_mutex_released(&var_mutex_etat_reception);
 
-				int err=0;
+				//int err=0;
 				message_stm m;
 				m.label = 'c';
-				m.fval = c;
-				err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
+                                
+                                if (noerror){
+                                    noerror = 0;
+                                    m.fval = c+0.01;
+                                } else {
+                                    noerror = 1;
+                                    m.fval = c;
+				}
+                                err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
 
 				rt_sem_v(&var_sem_envoyer);
 			}
@@ -444,13 +452,7 @@ void Communication_Android (void *arg){
     socket_desc = init_socket_server();
     
     while (1){
-        rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
-        log_mutex_acquired(&var_mutex_etat_android);
-
-        etat_android = 1;
-
-        rt_mutex_release(&var_mutex_arret);
-        log_mutex_released(&var_mutex_arret);
+        
         
         
         

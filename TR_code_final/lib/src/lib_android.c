@@ -126,6 +126,22 @@ void update_values(int socket_desc, float puissance, float angle, int sens) {
         perror("accept failed");
     }
     puts("Connection accepted");
+    rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
+    log_mutex_acquired(&var_mutex_etat_android);
+
+    etat_android = 1;
+
+    rt_mutex_release(&var_mutex_arret);
+    log_mutex_released(&var_mutex_arret);
+    
+    rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
+    log_mutex_acquired(&var_mutex_consigne_couple);
+
+    consigne_couple.set_consigne(0f);
+
+    rt_mutex_release(&var_mutex_consigne_couple);
+    log_mutex_released(&var_mutex_consigne_couple);    
+
 
     read_socket_values(socket_desc, client_sock, puissance, angle, sens);
     
