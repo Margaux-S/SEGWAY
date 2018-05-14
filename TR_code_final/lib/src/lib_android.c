@@ -145,7 +145,7 @@ int update_values(int socket_desc, float puissance, float angle, int sens) {
     log_mutex_released(&var_mutex_consigne_couple);    
 
 
-    read_socket_values(socket_desc, client_sock, puissance, angle, sens);
+    //read_socket_values(socket_desc, client_sock, puissance, angle, sens);
     
     if(read_size == 0)
     {
