@@ -293,9 +293,9 @@ void Arret_Urgence(void *arg){
 		message_stm m;
 		m.label = 'a';
 		m.ival = 1;
-                if (not(android)){
-                    err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
-                }
+                
+                err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
+                
 		/*log_sem_signaled(&var_sem_envoyer);
 		rt_sem_v(&var_sem_envoyer);*/
 
