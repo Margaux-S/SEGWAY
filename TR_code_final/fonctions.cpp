@@ -521,6 +521,13 @@ void Communication_Android (void *arg){
     }
     puts("Connection accepted");
 	       
+    rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
+    log_mutex_acquired(&var_mutex_etat_android);
+
+    etat_android = 1;
+
+    rt_mutex_release(&var_mutex_etat_android);
+    log_mutex_released(&var_mutex_etat_android);
     int MAX_SIZE = 1024;
     int len,i,taille;
     char tab[MAX_SIZE];
@@ -571,12 +578,12 @@ void Communication_Android (void *arg){
 					}//<\n
 			} //for
 		} //if taille
-		printf("Puissance : %f \nAngle : %f \nSens : %d \n", puissance, angle, sens);
-                puissance = k1*30*puissance;
+		rt_printf("Puissance : %f \nAngle : %f \nSens : %d \n", puissance, angle, sens);
+                //puissance = k1*30*puissance;
                 rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
                 log_mutex_acquired(&var_mutex_consigne_couple);
 
-                consigne_couple.set_consigne(puissance);
+                consigne_couple.set_consigne(puissance*10*0.80435);
 
                 rt_mutex_release(&var_mutex_consigne_couple);
                 log_mutex_released(&var_mutex_consigne_couple);
@@ -585,6 +592,13 @@ void Communication_Android (void *arg){
         if(read_size == 0)
         {
             puts("Client disconnected");
+            rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
+            log_mutex_acquired(&var_mutex_etat_android);
+
+            etat_android = 0;
+
+            rt_mutex_release(&var_mutex_etat_android);
+            log_mutex_released(&var_mutex_etat_android);
             fflush(stdout);
         }
         else if(read_size == -1)
