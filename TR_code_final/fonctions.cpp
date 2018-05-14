@@ -76,7 +76,7 @@ void Asservissement(void *arg) /* OK */
 				rt_mutex_release(&var_mutex_etat_reception);
 				log_mutex_released(&var_mutex_etat_reception);
 
-				//int err=0;
+				int err=0;
 				message_stm m;
 				m.label = 'c';
                                 
