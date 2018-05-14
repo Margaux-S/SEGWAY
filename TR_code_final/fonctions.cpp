@@ -604,6 +604,13 @@ void Communication_Android (void *arg){
         else if(read_size == -1)
         {
             perror("recv failed");
+            rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
+            log_mutex_acquired(&var_mutex_etat_android);
+
+            etat_android = 0;
+
+            rt_mutex_release(&var_mutex_etat_android);
+            log_mutex_released(&var_mutex_etat_android);
         }
     }
 
