@@ -471,7 +471,6 @@ void Communication_Android (void *arg){
     }
     */
     
-    void Communication_Android (void *arg){
     
     rt_printf("Thread ANDROID : Debut de l'éxecution de periodique à 100 Hz\n");
     rt_task_set_periodic(NULL, TM_NOW, 10000000);
@@ -600,5 +599,5 @@ void Communication_Android (void *arg){
      
     
 
-}
+
 
