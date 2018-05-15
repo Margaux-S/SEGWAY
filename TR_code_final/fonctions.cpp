@@ -327,7 +327,8 @@ rt_printf("6");
 		message_stm m;
                 //rt_printf("Prequeue read\n");
 		int err = rt_queue_read(&queue_Msg2STM,&m,sizeof(message_stm),SECENTOP / 10000);
-                //rt_printf("Postqueue read\n");
+                //
+                rt_printf("Postqueue read\n");
 
 		if(m.label == 'c'){
 			send_float_to_serial(m.fval,'c');
@@ -370,8 +371,8 @@ void Affichage(void *arg){
 
 	sckt_gui = init_socket(PORT_GUI);
 
-	rt_printf("Thread Affichage : Debut de l'éxecution de periodique à 10 Hz\n");
-	rt_task_set_periodic(NULL, TM_NOW, 100000000);
+	rt_printf("Thread Affichage : Debut de l'éxecution de periodique à 100 Hz\n");
+	rt_task_set_periodic(NULL, TM_NOW, 10000000);
 
 	log_task_entered();
 
