@@ -603,7 +603,7 @@ void Communication_Android (void *arg){
 
                 rt_mutex_release(&var_mutex_consigne_couple);
                 log_mutex_released(&var_mutex_consigne_couple);
-                 * */
+                
 	} //while 
         
         if(read_size == 0)
