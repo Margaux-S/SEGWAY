@@ -68,7 +68,7 @@ void Asservissement(void *arg) /* OK */
                                 if (not(android)){
                                     consigne_couple.set_consigne(c);
                                 } else {
-                                    c = consigne_couple;
+                                    c = consigne();
                                 }    
 				rt_mutex_release(&var_mutex_consigne_couple);
 				log_mutex_released(&var_mutex_consigne_couple);
@@ -275,7 +275,6 @@ void Arret_Urgence(void *arg){
 	log_task_entered();
         int android;
         
-rt_printf("5");
 	while(1){
 		//rt_printf("Thread Arret \n");
 
