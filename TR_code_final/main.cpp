@@ -146,9 +146,10 @@ void initStruct(void) {
 	/** Création de la file de message */
 
 	int err1 = 0;
-			err1 = rt_queue_create(&queue_Msg2STM, "Queue_stm", sizeof(message_stm)*50, Q_UNLIMITED, Q_FIFO);
+			err1 = rt_queue_create(&queue_Msg2STM, "Queue_stm", sizeof(message_stm)*1000, Q_UNLIMITED, Q_FIFO);
 			if (err1<0){
 				switch(err){
+                                   
 					case (-EINVAL):
 						rt_printf("rt_queue_create error: invalid mode or poolsize is 0\n");
 						break;

@@ -18,7 +18,7 @@ void Asservissement(void *arg) /* OK */
 	rt_task_set_periodic(NULL, TM_NOW, 20000000);
 
 	log_task_entered();
-
+rt_printf("1");
 	while (1) {
 	    //rt_printf("Thread Asservissement \n");
 		rt_task_wait_period(NULL);
@@ -110,6 +110,7 @@ void Asservissement(void *arg) /* OK */
 
 	log_task_entered();
 
+rt_printf("2");
 	while (1) {
 	    //rt_printf("Thread Presence_user \n");
 		rt_task_wait_period(NULL);
@@ -152,6 +153,7 @@ void Asservissement(void *arg) /* OK */
 
 	log_task_entered();
 
+rt_printf("3");
 	while (1) {
     	//rt_printf("Thread Batterie \n");
 		rt_task_wait_period(NULL);
@@ -220,6 +222,7 @@ void Communication(void *arg)
 
 	log_task_entered();
 
+rt_printf("4");
 	while (1) {
     		//rt_printf("Thread Communication \n");
 			rt_task_wait_period(NULL);
@@ -271,6 +274,7 @@ void Arret_Urgence(void *arg){
 	log_task_entered();
         int android;
         
+rt_printf("5");
 	while(1){
 		//rt_printf("Thread Arret \n");
 
@@ -315,13 +319,15 @@ void Envoyer(void *arg){
 
 	log_task_entered();
 
+rt_printf("6");
 	while(1){
 		//rt_printf("Thread Envoyer \n");
 		rt_task_wait_period(NULL);
 
 		message_stm m;
+                rt_printf("Prequeue read");
 		int err = rt_queue_read(&queue_Msg2STM,&m,sizeof(message_stm),SECENTOP / 10000);
-                
+                rt_printf("Postqueue read");
 
 		if(m.label == 'c'){
 			send_float_to_serial(m.fval,'c');
@@ -370,6 +376,7 @@ void Affichage(void *arg){
 
 	log_task_entered();
 
+rt_printf("8");
 	while(1){
 		//rt_printf("Thread Affichage \n");
 		rt_task_wait_period(NULL);
