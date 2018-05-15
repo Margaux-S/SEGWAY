@@ -12,13 +12,12 @@ void Asservissement(void *arg) /* OK */
 	float angle, vit_angulaire, c;
 	int com, android;
 	int uart0_filestream;
-        //int noerror = 0;
+        int noerror = 0;
 
 	rt_printf("Thread Asservissement: Debut de l'exécution de periodique à 50 Hz\n");
 	rt_task_set_periodic(NULL, TM_NOW, 20000000);
 
 	log_task_entered();
-rt_printf("1");
 	while (1) {
 	    //rt_printf("Thread Asservissement \n");
 		rt_task_wait_period(NULL);
@@ -38,7 +37,7 @@ rt_printf("1");
                 log_mutex_released(&var_mutex_etat_android);
                 
                 if(android){
-                    rt_printf("coucou je suis android");
+                
                 }
 
 		if (com){
@@ -66,9 +65,11 @@ rt_printf("1");
 				rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
 				log_mutex_acquired(&var_mutex_consigne_couple);
                                 
-                                //if (not(android)){
+                                if (not(android)){
                                     consigne_couple.set_consigne(c);
-                                //}    
+                                } else {
+                                    c = consigne_couple;
+                                }    
 				rt_mutex_release(&var_mutex_consigne_couple);
 				log_mutex_released(&var_mutex_consigne_couple);
 
@@ -83,14 +84,14 @@ rt_printf("1");
 				int err=0;
 				message_stm m;
 				m.label = 'c';
-                                m.fval = c;
-                                /*if (noerror){
+                               // m.fval = c;
+                                if (noerror){
                                     noerror = 0;
                                     m.fval = c+0.01;
                                 } else {
                                     noerror = 1;
                                     m.fval = c;
-				}*/
+				}
                                 
                                 err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
 
@@ -591,9 +592,12 @@ void Communication_Android (void *arg){
 					}//<\n
 			} //for
 		} //if taille
+                if (sens == -1) {
+                    puissance = -puissance;
+                }
 		rt_printf("Puissance : %f \nAngle : %f \nSens : %d \n", puissance, angle, sens);
-                //puissance = k1*30*puissance;
-                /*rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
+                
+                rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
                 log_mutex_acquired(&var_mutex_consigne_couple);
 
                 consigne_couple.set_consigne(puissance*10*0.80435);

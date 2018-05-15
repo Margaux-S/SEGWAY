@@ -93,7 +93,7 @@ int init_recording(){
 
 	// creates queue for the messages
 	int err = 0;
-	err = rt_queue_create(&log_queue, "Log Queue", sizeof(message_log)*128000, /*15000*/Q_UNLIMITED, Q_FIFO);
+	err = rt_queue_create(&log_queue, "Log Queue", sizeof(message_log)*12800, /*15000*/Q_UNLIMITED, Q_FIFO);
 	if (err<0){
 		switch(err){
 			case (-EINVAL):
@@ -159,7 +159,7 @@ int write_in_queue(RT_QUEUE *msg_queue, void * buf, int size) {
 	if (err<0){
 		switch(err){
 			case (-ENOMEM):
-				rt_printf("rt_queue_send1 error limit exceeded %d\n",err);
+				//rt_printf("rt_queue_send1 error limit exceeded %d\n",err);
 				break;
 			case (-EINVAL):
 				rt_printf("rt_queue_send1 error: first argument is not a message queue descriptor or invalid mode or buf is NULL %d\n",err);
