@@ -12,7 +12,7 @@ void Asservissement(void *arg) /* OK */
 	float angle, vit_angulaire, c;
 	int com, android;
 	int uart0_filestream;
-        int noerror = 0;
+        //int noerror = 0;
 
 	rt_printf("Thread Asservissement: Debut de l'exécution de periodique à 50 Hz\n");
 	rt_task_set_periodic(NULL, TM_NOW, 20000000);
@@ -29,14 +29,14 @@ void Asservissement(void *arg) /* OK */
 		rt_mutex_release(&var_mutex_etat_com);
 		log_mutex_released(&var_mutex_etat_com);
                 
-                rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
+               /* rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
                 log_mutex_acquired(&var_mutex_etat_android);
 
                 android = etat_android;
 
                 rt_mutex_release(&var_mutex_arret);
                 log_mutex_released(&var_mutex_arret);
-
+*/
 		if (com){
 
 			rt_mutex_acquire(&var_mutex_etat_angle, TM_INFINITE);
@@ -62,9 +62,9 @@ void Asservissement(void *arg) /* OK */
 				rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
 				log_mutex_acquired(&var_mutex_consigne_couple);
                                 
-                                if (not(android)){
+                                //if (not(android)){
                                     consigne_couple.set_consigne(c);
-                                }    
+                                //}    
 				rt_mutex_release(&var_mutex_consigne_couple);
 				log_mutex_released(&var_mutex_consigne_couple);
 
@@ -79,14 +79,15 @@ void Asservissement(void *arg) /* OK */
 				int err=0;
 				message_stm m;
 				m.label = 'c';
-                                
-                                if (noerror){
+                                m.fval = c;
+                                /*if (noerror){
                                     noerror = 0;
                                     m.fval = c+0.01;
                                 } else {
                                     noerror = 1;
                                     m.fval = c;
-				}
+				}*/
+                                
                                 err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
 
 				rt_sem_v(&var_sem_envoyer);
@@ -273,14 +274,14 @@ void Arret_Urgence(void *arg){
 		rt_sem_p(&var_sem_arret,TM_INFINITE);
 		log_sem_entered(&var_sem_arret);
 
-                rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
+               /* rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
 		log_mutex_acquired(&var_mutex_etat_android);
 
 		android = etat_android;
 
 		rt_mutex_release(&var_mutex_etat_android);
 		log_mutex_released(&var_mutex_etat_android);
-                
+                */
 		rt_mutex_acquire(&var_mutex_arret, TM_INFINITE);
 		log_mutex_acquired(&var_mutex_arret);
 
@@ -487,9 +488,9 @@ void Communication_Android (void *arg){
     socket_desc = socket(AF_INET , SOCK_STREAM , 0);
     if (socket_desc == -1)
     {
-        printf("Could not create socket");
+        rt_printf("Could not create socket");
     }
-    puts("Socket created");
+    rt_printf("Socket created");
 
     //Prepare the sockaddr_in structure
     server.sin_family = AF_INET;
@@ -503,13 +504,13 @@ void Communication_Android (void *arg){
         perror("bind failed. Error");
         //return 1;
     }
-    puts("bind done");
+    rt_printf("bind done");
 	while (1){
     //Listen
     listen(socket_desc , 3);
 
     //Accept and incoming connection
-    puts("Waiting for incoming connections...");
+    rt_printf("Waiting for incoming connections...");
     c = sizeof(struct sockaddr_in);
 
     //accept connection from an incoming client
@@ -519,7 +520,7 @@ void Communication_Android (void *arg){
         perror("accept failed");
         //return 1;
     }
-    puts("Connection accepted");
+    rt_printf("Connection accepted");
 	       
     rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
     log_mutex_acquired(&var_mutex_etat_android);
@@ -580,18 +581,19 @@ void Communication_Android (void *arg){
 		} //if taille
 		rt_printf("Puissance : %f \nAngle : %f \nSens : %d \n", puissance, angle, sens);
                 //puissance = k1*30*puissance;
-                rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
+                /*rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
                 log_mutex_acquired(&var_mutex_consigne_couple);
 
                 consigne_couple.set_consigne(puissance*10*0.80435);
 
                 rt_mutex_release(&var_mutex_consigne_couple);
                 log_mutex_released(&var_mutex_consigne_couple);
+                 * */
 	} //while 
         
         if(read_size == 0)
         {
-            puts("Client disconnected");
+            rt_printf("Client disconnected");
             rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
             log_mutex_acquired(&var_mutex_etat_android);
 
