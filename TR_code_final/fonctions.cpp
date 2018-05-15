@@ -370,7 +370,6 @@ void Affichage(void *arg){
 	int sckt_gui;
 
 	sckt_gui = init_socket(PORT_GUI);
-
 	rt_printf("Thread Affichage : Debut de l'éxecution de periodique à 100 Hz\n");
 	rt_task_set_periodic(NULL, TM_NOW, 10000000);
 
@@ -499,7 +498,7 @@ void Communication_Android (void *arg){
     char client_message[2000];
 
     //Create socket
-     rt_printf("La1");
+     rt_printf("La1\n");
     socket_desc = socket(AF_INET , SOCK_STREAM , 0);
     rt_printf("La");
     if (socket_desc == -1)
