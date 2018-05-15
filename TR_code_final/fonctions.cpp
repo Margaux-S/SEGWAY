@@ -64,7 +64,7 @@ void Asservissement(void *arg) /* OK */
                                 
                                 if (not(android)){
                                     c = (k1 * angle + k2 * vit_angulaire);
-                                    //consigne_couple.set_consigne(c);
+                                    consigne_couple.set_consigne(c);
                                 } else {
                                     c = consigne_couple.consigne();
                                 }    
@@ -220,7 +220,6 @@ void Communication(void *arg)
 
 	log_task_entered();
 
-rt_printf("4");
 	while (1) {
     		//rt_printf("Thread Communication \n");
 			rt_task_wait_period(NULL);
