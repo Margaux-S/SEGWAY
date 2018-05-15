@@ -35,10 +35,7 @@ void Asservissement(void *arg) /* OK */
 
                 rt_mutex_release(&var_mutex_etat_android);
                 log_mutex_released(&var_mutex_etat_android);
-                
-                if(android){
-                
-                }
+             
 
 		if (com){
 
@@ -60,13 +57,14 @@ void Asservissement(void *arg) /* OK */
 			log_mutex_released(&var_mutex_etat_reception);
 
 			if(com) {
-				c = (k1 * angle + k2 * vit_angulaire);
+				
 
 				rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
 				log_mutex_acquired(&var_mutex_consigne_couple);
                                 
                                 if (not(android)){
-                                    consigne_couple.set_consigne(c);
+                                    c = (k1 * angle + k2 * vit_angulaire);
+                                    //consigne_couple.set_consigne(c);
                                 } else {
                                     c = consigne_couple.consigne();
                                 }    
@@ -87,7 +85,7 @@ void Asservissement(void *arg) /* OK */
                                // m.fval = c;
                                 if (noerror){
                                     noerror = 0;
-                                    m.fval = c+0.01;
+                                    m.fval = c+0.1;
                                 } else {
                                     noerror = 1;
                                     m.fval = c;
@@ -111,7 +109,6 @@ void Asservissement(void *arg) /* OK */
 
 	log_task_entered();
 
-rt_printf("2");
 	while (1) {
 	    //rt_printf("Thread Presence_user \n");
 		rt_task_wait_period(NULL);
@@ -603,7 +600,7 @@ void Communication_Android (void *arg){
                 if (sens == -1) {
                     puissance = -puissance;
                 }
-		rt_printf("Puissance : %f \nAngle : %f \nSens : %d \n", puissance, angle, sens);
+		//rt_printf("Puissance : %f \nAngle : %f \nSens : %d \n", puissance, angle, sens);
                 
                 rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
                 log_mutex_acquired(&var_mutex_consigne_couple);
