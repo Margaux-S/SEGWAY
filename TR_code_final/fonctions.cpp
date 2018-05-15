@@ -29,14 +29,18 @@ void Asservissement(void *arg) /* OK */
 		rt_mutex_release(&var_mutex_etat_com);
 		log_mutex_released(&var_mutex_etat_com);
                 
-               /* rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
+                rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
                 log_mutex_acquired(&var_mutex_etat_android);
 
                 android = etat_android;
 
                 rt_mutex_release(&var_mutex_arret);
                 log_mutex_released(&var_mutex_arret);
-*/
+                
+                if(android){
+                    rt_printf("coucou je suis android");
+                }
+
 		if (com){
 
 			rt_mutex_acquire(&var_mutex_etat_angle, TM_INFINITE);
@@ -317,6 +321,7 @@ void Envoyer(void *arg){
 
 		message_stm m;
 		int err = rt_queue_read(&queue_Msg2STM,&m,sizeof(message_stm),SECENTOP / 10000);
+                
 
 		if(m.label == 'c'){
 			send_float_to_serial(m.fval,'c');
@@ -324,6 +329,8 @@ void Envoyer(void *arg){
 		else if(m.label == 'a'){
 			send_int_to_serial(m.ival,'a');
 		}
+                
+                int errr = rt_queue_free(&queue_Msg2STM,&m);
 
 		/*log_sem_waiting(&var_sem_envoyer);
 		rt_sem_p(&var_sem_envoyer,TM_INFINITE);
