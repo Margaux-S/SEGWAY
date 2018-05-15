@@ -68,7 +68,7 @@ void Asservissement(void *arg) /* OK */
                                 if (not(android)){
                                     consigne_couple.set_consigne(c);
                                 } else {
-                                    c = consigne();
+                                    c = consigne_couple.consigne();
                                 }    
 				rt_mutex_release(&var_mutex_consigne_couple);
 				log_mutex_released(&var_mutex_consigne_couple);
