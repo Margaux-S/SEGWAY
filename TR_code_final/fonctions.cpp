@@ -498,14 +498,12 @@ void Communication_Android (void *arg){
     char client_message[2000];
 
     //Create socket
-     rt_printf("La1\n");
     socket_desc = socket(AF_INET , SOCK_STREAM , 0);
-    rt_printf("La");
     if (socket_desc == -1)
     {
-        rt_printf("Could not create socket");
+        rt_printf("Could not create socket\n");
     }
-    rt_printf("Socket created");
+    rt_printf("Socket created\n");
 
     //Prepare the sockaddr_in structure
     server.sin_family = AF_INET;
@@ -516,26 +514,26 @@ void Communication_Android (void *arg){
     if( bind(socket_desc,(struct sockaddr *)&server , sizeof(server)) < 0)
     {
         //print the error message
-        perror("bind failed. Error");
+        perror("bind failed. Error\n");
         //return 1;
     }
-    rt_printf("bind done");
+    rt_printf("bind done\n");
 	while (1){
     //Listen
     listen(socket_desc , 3);
 
     //Accept and incoming connection
-    rt_printf("Waiting for incoming connections...");
+    rt_printf("Waiting for incoming connections...\n");
     c = sizeof(struct sockaddr_in);
 
     //accept connection from an incoming client
     client_sock = accept(socket_desc, (struct sockaddr *)&client, (socklen_t*)&c);
     if (client_sock < 0)
     {
-        perror("accept failed");
+        perror("accept failed\n");
         //return 1;
     }
-    rt_printf("Connection accepted");
+    rt_printf("Connection accepted\n");
 	       
     rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
     log_mutex_acquired(&var_mutex_etat_android);
@@ -608,7 +606,7 @@ void Communication_Android (void *arg){
         
         if(read_size == 0)
         {
-            rt_printf("Client disconnected");
+            rt_printf("Client disconnected\n");
             rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
             log_mutex_acquired(&var_mutex_etat_android);
 
@@ -620,7 +618,7 @@ void Communication_Android (void *arg){
         }
         else if(read_size == -1)
         {
-            perror("recv failed");
+            perror("recv failed\n");
             rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
             log_mutex_acquired(&var_mutex_etat_android);
 
