@@ -492,6 +492,7 @@ void Communication_Android (void *arg){
     char client_message[2000];
 
     //Create socket
+     rt_printf("La1");
     socket_desc = socket(AF_INET , SOCK_STREAM , 0);
     rt_printf("La");
     if (socket_desc == -1)
