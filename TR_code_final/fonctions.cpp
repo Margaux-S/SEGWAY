@@ -532,6 +532,12 @@ void Communication_Android (void *arg){
     }
     rt_printf("Connection accepted\n");
 	       
+    
+    rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
+    log_mutex_acquired(&var_mutex_consigne_couple);
+
+    consigne_couple.set_consigne(0.001);
+    
     rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
     log_mutex_acquired(&var_mutex_etat_android);
 
@@ -539,14 +545,9 @@ void Communication_Android (void *arg){
 
     rt_mutex_release(&var_mutex_etat_android);
     log_mutex_released(&var_mutex_etat_android);
-    
-    rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
-    log_mutex_acquired(&var_mutex_consigne_couple);
-
-    consigne_couple.set_consigne(0.001);
-    
     rt_mutex_release(&var_mutex_consigne_couple);
     log_mutex_released(&var_mutex_consigne_couple);
+    rt_printf("Mutex done \n");
     int MAX_SIZE = 1024;
     int len,i,taille;
     char tab[MAX_SIZE];
@@ -557,6 +558,7 @@ void Communication_Android (void *arg){
 	/* lecture d'un message de taille max MAX_SIZE, information dans string */
  	//len = read(sckt, string, MAX_SIZE);
 	while( (len = recv(client_sock , string , MAX_SIZE , 0)) > 0 ){
+            rt_printf("Reception message \n");
 		taille=strlen((char*)string);
 		if(taille > 0){
 			memcpy(tab,string,taille);	//Si le message n'est pas vide, on copie ces informations dans tab
@@ -605,11 +607,11 @@ void Communication_Android (void *arg){
                 rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
                 log_mutex_acquired(&var_mutex_consigne_couple);
 
-                consigne_couple.set_consigne(puissance*3*0.80435);
+                consigne_couple.set_consigne(puissance*7*0.80435);
 
                 rt_mutex_release(&var_mutex_consigne_couple);
                 log_mutex_released(&var_mutex_consigne_couple);
-                
+                rt_printf("Puissance set \n");
 	} //while 
         
         if(read_size == 0)
