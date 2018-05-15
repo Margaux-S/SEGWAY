@@ -325,9 +325,9 @@ rt_printf("6");
 		rt_task_wait_period(NULL);
 
 		message_stm m;
-                rt_printf("Prequeue read");
+                //rt_printf("Prequeue read\n");
 		int err = rt_queue_read(&queue_Msg2STM,&m,sizeof(message_stm),SECENTOP / 10000);
-                rt_printf("Postqueue read");
+                //rt_printf("Postqueue read\n");
 
 		if(m.label == 'c'){
 			send_float_to_serial(m.fval,'c');
@@ -336,7 +336,6 @@ rt_printf("6");
 			send_int_to_serial(m.ival,'a');
 		}
                 
-                int errr = rt_queue_free(&queue_Msg2STM,&m);
 
 		/*log_sem_waiting(&var_sem_envoyer);
 		rt_sem_p(&var_sem_envoyer,TM_INFINITE);
