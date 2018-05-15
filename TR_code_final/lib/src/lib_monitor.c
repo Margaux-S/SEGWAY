@@ -93,7 +93,7 @@ int init_recording(){
 
 	// creates queue for the messages
 	int err = 0;
-	err = rt_queue_create(&log_queue, "Log Queue", sizeof(message_log)*12800, /*15000*/Q_UNLIMITED, Q_FIFO);
+	err = rt_queue_create(&log_queue, "Log Queue", sizeof(message_log)*128000, /*15000*/Q_UNLIMITED, Q_FIFO);
 	if (err<0){
 		switch(err){
 			case (-EINVAL):
