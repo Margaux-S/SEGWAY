@@ -85,7 +85,7 @@ void Asservissement(void *arg) /* OK */
                                // m.fval = c;
                                 if (noerror){
                                     noerror = 0;
-                                    m.fval = c+0.1;
+                                    m.fval = c+0.01;
                                 } else {
                                     noerror = 1;
                                     m.fval = c;
