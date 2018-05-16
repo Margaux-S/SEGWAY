@@ -79,7 +79,7 @@ void Asservissement(void *arg) /* OK */
 				rt_mutex_release(&var_mutex_etat_reception);
 				log_mutex_released(&var_mutex_etat_reception);
 
-				/*int err=0;
+				int err=0;
 				message_stm m;
 				m.label = 'c';
                                // m.fval = c;
@@ -91,9 +91,9 @@ void Asservissement(void *arg) /* OK */
                                     m.fval = c;
 				}
                                 
-                                err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);*/
+                                err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
 
-				//rt_sem_v(&var_sem_envoyer);
+				rt_sem_v(&var_sem_envoyer);
 			}
 		}
 	}
@@ -214,7 +214,7 @@ void Communication(void *arg)
 	//rt_printf("Thread Asservissement: Debut de l'exécution de periodique à 50 Hz\n");
 	//rt_task_set_periodic(NULL, TM_NOW, 20000000);
 
-	rt_printf("Thread Communication: Debut de l'exécution de periodique à 100 Hz\n");
+	rt_printf("Thread Asservissement: Debut de l'exécution de periodique à 100 Hz\n");
 	rt_task_set_periodic(NULL, TM_NOW, 10000000);
 
 	log_task_entered();
@@ -272,13 +272,7 @@ void Arret_Urgence(void *arg){
         
 	while(1){
 		//rt_printf("Thread Arret \n");
-                rt_mutex_acquire(&var_mutex_arret, TM_INFINITE);
-                log_mutex_acquired(&var_mutex_arret);
 
-                arret = 0;
-
-                rt_mutex_release(&var_mutex_arret);
-                log_mutex_released(&var_mutex_arret);
 		log_sem_waiting(&var_sem_arret);
 		rt_sem_p(&var_sem_arret,TM_INFINITE);
 		log_sem_entered(&var_sem_arret);
@@ -291,22 +285,21 @@ void Arret_Urgence(void *arg){
 		rt_mutex_release(&var_mutex_etat_android);
 		log_mutex_released(&var_mutex_etat_android);
                 
-		
+		rt_mutex_acquire(&var_mutex_arret, TM_INFINITE);
+		log_mutex_acquired(&var_mutex_arret);
 
-		/*int err=0;
+		arret = 1;
+
+		rt_mutex_release(&var_mutex_arret);
+		log_mutex_released(&var_mutex_arret);
+
+		int err=0;
 		message_stm m;
 		m.label = 'a';
 		m.ival = 1;
-                */
+                
                 if (not(android)){
-                    rt_mutex_acquire(&var_mutex_arret, TM_INFINITE);
-                    log_mutex_acquired(&var_mutex_arret);
-
-                    arret = 1;
-
-                    rt_mutex_release(&var_mutex_arret);
-                    log_mutex_released(&var_mutex_arret);
-                    //err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
+                    err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
                 }
 		/*log_sem_signaled(&var_sem_envoyer);
 		rt_sem_v(&var_sem_envoyer);*/
@@ -326,7 +319,7 @@ void Envoyer(void *arg){
 		//rt_printf("Thread Envoyer \n");
 		rt_task_wait_period(NULL);
 
-		/*message_stm m;
+		message_stm m;
 		int err = rt_queue_read(&queue_Msg2STM,&m,sizeof(message_stm),SECENTOP / 10000);
                 
                 
@@ -337,33 +330,7 @@ void Envoyer(void *arg){
 		else if(m.label == 'a'){
 			send_int_to_serial(m.ival,'a');
 		}
-                rt_printf("J'envoie %f au STM32 \n", m.fval);*/
-                int noerror= 0;
-                rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
-		log_mutex_acquired(&var_mutex_consigne_couple);
-                if (noerror){
-                    noerror = 0;
-                    send_float_to_serial(consigne_couple.consigne(),'c');
-                    rt_printf("J'envoie %f au STM32 \n", consigne_couple.consigne());
-                } else {
-                    send_float_to_serial(consigne_couple.consigne()+0.1,'c');
-                    rt_printf("J'envoie %f au STM32 \n", consigne_couple.consigne()+0.1);
-                    noerror = 1;
-                }
-                
-		rt_mutex_release(&var_mutex_consigne_couple);
-		log_mutex_released(&var_mutex_consigne_couple);
-                
-                rt_mutex_acquire(&var_mutex_arret, TM_INFINITE);
-                log_mutex_acquired(&var_mutex_arret);
-
-                if (arret) {
-                    send_int_to_serial(arret,'a');
-                }
-
-                rt_mutex_release(&var_mutex_arret);
-                log_mutex_released(&var_mutex_arret);
-                
+                rt_printf("J'envoie %f au STM32 \n", m.fval);
                 
 
 		/*log_sem_waiting(&var_sem_envoyer);
@@ -646,20 +613,7 @@ void Communication_Android (void *arg){
                 rt_mutex_release(&var_mutex_consigne_couple);
                 log_mutex_released(&var_mutex_consigne_couple);
                 rt_printf("Puissance set à %f\n", puissance*4*0.80435);
-                /*int err=0;
-                message_stm m;
-                m.label = 'c';
-               // m.fval = c;
-                int noerror;
-                if (noerror){
-                    noerror = 0;
-                    m.fval = puissance*4*0.80435+0.1;
-                } else {
-                    noerror = 1;
-                    m.fval = puissance*4*0.80435;
-                }
-
-                err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);*/
+                
                 
 	} //while 
         

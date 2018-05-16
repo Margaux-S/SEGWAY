@@ -25,7 +25,7 @@
 /*! \def VITESSE_ANG_INITIAL
     \brief Valeur décrivant la valeur initial des consignes de commandes 
 */
-#define CONSIGNE_INITIAL                    (0.01)
+#define CONSIGNE_INITIAL                    (0.0)
 
 /*! \def ANGLE_INITIAL
     \brief Valeur décrivant la valeur initial de angle
