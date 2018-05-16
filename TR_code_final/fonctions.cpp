@@ -214,7 +214,7 @@ void Communication(void *arg)
 	//rt_printf("Thread Asservissement: Debut de l'exécution de periodique à 50 Hz\n");
 	//rt_task_set_periodic(NULL, TM_NOW, 20000000);
 
-	rt_printf("Thread Asservissement: Debut de l'exécution de periodique à 100 Hz\n");
+	rt_printf("Thread Communication: Debut de l'exécution de periodique à 100 Hz\n");
 	rt_task_set_periodic(NULL, TM_NOW, 10000000);
 
 	log_task_entered();
@@ -293,11 +293,11 @@ void Arret_Urgence(void *arg){
                 
 		
 
-		int err=0;
+		/*int err=0;
 		message_stm m;
 		m.label = 'a';
 		m.ival = 1;
-                
+                */
                 if (not(android)){
                     rt_mutex_acquire(&var_mutex_arret, TM_INFINITE);
                     log_mutex_acquired(&var_mutex_arret);
