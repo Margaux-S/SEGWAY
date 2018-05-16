@@ -327,15 +327,15 @@ void Envoyer(void *arg){
                 
                 
 
-		if(*m.label == 'c'){
-			send_float_to_serial(*m.fval,'c');
+		if(m->label == 'c'){
+			send_float_to_serial(m->fval,'c');
 		}
-		else if(*m.label == 'a'){
-			send_int_to_serial(*m.ival,'a');
+		else if(m->label == 'a'){
+			send_int_to_serial(m->ival,'a');
 		} else {
                     NULL;
                 }
-                rt_printf("J'envoie %f au STM32 \n", *m.fval);
+                rt_printf("J'envoie %f au STM32 \n", m->fval);
                 int errr = rt_queue_free(&queue_Msg2STM,m);
                 free(*m);
 		/*log_sem_waiting(&var_sem_envoyer);
