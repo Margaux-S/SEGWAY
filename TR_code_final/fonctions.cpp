@@ -332,10 +332,16 @@ void Envoyer(void *arg){
 			send_int_to_serial(m.ival,'a');
 		}
                 rt_printf("J'envoie %f au STM32 \n", m.fval);*/
+                int noerror= 0;
                 rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
 		log_mutex_acquired(&var_mutex_consigne_couple);
-                
-                send_float_to_serial(consigne_couple.consigne(),'c');
+                if (noerror){
+                    noerror = 0;
+                    send_float_to_serial(consigne_couple.consigne(),'c');
+                } else {
+                    send_float_to_serial(consigne_couple.consigne()+0.1,'c');
+                    noerror = 1;
+                }
                 rt_printf("J'envoie %f au STM32 \n", consigne_couple.consigne());
 		rt_mutex_release(&var_mutex_consigne_couple);
 		log_mutex_released(&var_mutex_consigne_couple);
