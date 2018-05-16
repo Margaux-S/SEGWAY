@@ -315,29 +315,33 @@ void Envoyer(void *arg){
 	rt_task_set_periodic(NULL, TM_NOW, 10000000);
 
 	log_task_entered();
-        message_stm *m;
-                
+
 	while(1){
 		//rt_printf("Thread Envoyer \n");
 		rt_task_wait_period(NULL);
+
+		/*message_stm m;
+		int err = rt_queue_read(&queue_Msg2STM,&m,sizeof(message_stm),SECENTOP / 10000);
+                
                 
 
-		
-		int err = rt_queue_read(&queue_Msg2STM,m,sizeof(message_stm),SECENTOP / 10000);
-                
-                
-
-		if(m->label == 'c'){
-			send_float_to_serial(m->fval,'c');
+		if(m.label == 'c'){
+			send_float_to_serial(m.fval,'c');
 		}
-		else if(m->label == 'a'){
-			send_int_to_serial(m->ival,'a');
-		} else {
-                    NULL;
-                }
-                rt_printf("J'envoie %f au STM32 \n", m->fval);
-                int errr = rt_queue_free(&queue_Msg2STM,m);
-                free(m);
+		else if(m.label == 'a'){
+			send_int_to_serial(m.ival,'a');
+		}
+                rt_printf("J'envoie %f au STM32 \n", m.fval);*/
+                rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
+		log_mutex_acquired(&var_mutex_consigne_couple);
+                
+                send_float_to_serial(consigne_couple.consigne(),'c');
+                
+		rt_mutex_release(&var_mutex_consigne_couple);
+		log_mutex_released(&var_mutex_consigne_couple);
+                
+                
+
 		/*log_sem_waiting(&var_sem_envoyer);
 		rt_sem_p(&var_sem_envoyer,TM_INFINITE);
 		log_sem_entered(&var_sem_envoyer);
@@ -618,7 +622,7 @@ void Communication_Android (void *arg){
                 rt_mutex_release(&var_mutex_consigne_couple);
                 log_mutex_released(&var_mutex_consigne_couple);
                 rt_printf("Puissance set à %f\n", puissance*4*0.80435);
-                int err=0;
+                /*int err=0;
                 message_stm m;
                 m.label = 'c';
                // m.fval = c;
@@ -631,7 +635,7 @@ void Communication_Android (void *arg){
                     m.fval = puissance*4*0.80435;
                 }
 
-                err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
+                err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);*/
                 
 	} //while 
         
