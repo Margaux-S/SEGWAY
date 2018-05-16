@@ -331,6 +331,7 @@ void Envoyer(void *arg){
 		else if(m.label == 'a'){
 			send_int_to_serial(m.ival,'a');
 		}
+                rt_printf("J'envoie %f au STM32", m.fval);
                 
 
 		/*log_sem_waiting(&var_sem_envoyer);
