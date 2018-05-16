@@ -618,6 +618,7 @@ void Communication_Android (void *arg){
                 message_stm m;
                 m.label = 'c';
                // m.fval = c;
+                int noerror;
                 if (noerror){
                     noerror = 0;
                     m.fval = puissance*4*0.80435+0.1;

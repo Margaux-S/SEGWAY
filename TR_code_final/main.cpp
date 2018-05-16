@@ -222,8 +222,8 @@ void deleteTasks() {
 	rt_task_delete(&th_Surveillance_Batterie);
 
 	rt_task_delete(&th_Presence_User);
-;*/
-	rt_task_delete(&th_Envoyer)/*
+*/
+	rt_task_delete(&th_Envoyer);/*
 
 	rt_task_delete(&th_Arret_Urgence);*/
 
