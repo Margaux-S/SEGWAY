@@ -568,7 +568,7 @@ void Communication_Android (void *arg){
 						switch (tab[i+1]){
 							//puissance
                                                     case 'p':
-                                                        memcpy(&data,&tab[i+2],sizeof(data));
+                                                        //memcpy(&data,&tab[i+2],sizeof(data));
                                                         subtab[0] = tab[i+2];
                                                         subtab[1] = tab[i+3];
                                                         subtab[2] = tab[i+4];
@@ -577,7 +577,7 @@ void Communication_Android (void *arg){
                                                         break;
                                                     //angle		
                                                     case 'a':
-                                                        memcpy(&data,&tab[i+2],sizeof(data));
+                                                        //memcpy(&data,&tab[i+2],sizeof(data));
                                                         subtab[0] = tab[i+2];
                                                         subtab[1] = tab[i+3];
                                                         subtab[2] = tab[i+4];
@@ -587,7 +587,7 @@ void Communication_Android (void *arg){
                                                     //sens
                                                     case 's':
                                                         //puts("S \n");
-                                                        memcpy(&data,&tab[i+2],sizeof(data));
+                                                        //memcpy(&data,&tab[i+2],sizeof(data));
                                                         subtab[0] = tab[i+2];
                                                         subtab[1] = tab[i+3];
                                                         subtab[2] = tab[i+4];
