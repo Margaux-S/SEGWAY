@@ -336,7 +336,7 @@ void Envoyer(void *arg){
 		log_mutex_acquired(&var_mutex_consigne_couple);
                 
                 send_float_to_serial(consigne_couple.consigne(),'c');
-                
+                rt_printf("J'envoie %f au STM32 \n", consigne_couple.consigne());
 		rt_mutex_release(&var_mutex_consigne_couple);
 		log_mutex_released(&var_mutex_consigne_couple);
                 
