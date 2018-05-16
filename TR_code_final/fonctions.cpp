@@ -483,7 +483,7 @@ void Communication_Android (void *arg){
     
     
     rt_printf("Thread ANDROID : Debut de l'éxecution de periodique à 100 Hz\n");
-    //rt_task_set_periodic(NULL, TM_NOW, 10000000);
+    rt_task_set_periodic(NULL, TM_NOW, 10000000);
 
     log_task_entered();
     
@@ -557,6 +557,7 @@ void Communication_Android (void *arg){
 	/* lecture d'un message de taille max MAX_SIZE, information dans string */
  	//len = read(sckt, string, MAX_SIZE);
 	while( (len = recv(client_sock , string , MAX_SIZE , 0)) > 0 ){
+            rt_task_wait_period(NULL);
             //rt_printf("Reception message \n");
 		taille=strlen((char*)string);
 		if(taille > 0){
@@ -566,33 +567,33 @@ void Communication_Android (void *arg){
 					if((tab[i] == '<')&&(tab[i+6] == '\n')){
 						switch (tab[i+1]){
 							//puissance
-							case 'p':
-									memcpy(&data,&tab[i+2],sizeof(data));
-									subtab[0] = tab[i+2];
-									subtab[1] = tab[i+3];
-									subtab[2] = tab[i+4];
-									subtab[3] = tab[i+5];
-									puissance = atof(subtab); 
-									break;
-							//angle		
-							case 'a':
-									memcpy(&data,&tab[i+2],sizeof(data));
-									subtab[0] = tab[i+2];
-									subtab[1] = tab[i+3];
-									subtab[2] = tab[i+4];
-									subtab[3] = tab[i+5];
-									angle = atof(subtab); 
-									break;
-							//sens
-							case 's':
-									//puts("S \n");
-									memcpy(&data,&tab[i+2],sizeof(data));
-									subtab[0] = tab[i+2];
-									subtab[1] = tab[i+3];
-									subtab[2] = tab[i+4];
-									subtab[3] = tab[i+5];
-									sens = atoi(subtab);
-									break;
+                                                    case 'p':
+                                                        memcpy(&data,&tab[i+2],sizeof(data));
+                                                        subtab[0] = tab[i+2];
+                                                        subtab[1] = tab[i+3];
+                                                        subtab[2] = tab[i+4];
+                                                        subtab[3] = tab[i+5];
+                                                        puissance = atof(subtab); 
+                                                        break;
+                                                    //angle		
+                                                    case 'a':
+                                                        memcpy(&data,&tab[i+2],sizeof(data));
+                                                        subtab[0] = tab[i+2];
+                                                        subtab[1] = tab[i+3];
+                                                        subtab[2] = tab[i+4];
+                                                        subtab[3] = tab[i+5];
+                                                        angle = atof(subtab); 
+                                                        break;
+                                                    //sens
+                                                    case 's':
+                                                        //puts("S \n");
+                                                        memcpy(&data,&tab[i+2],sizeof(data));
+                                                        subtab[0] = tab[i+2];
+                                                        subtab[1] = tab[i+3];
+                                                        subtab[2] = tab[i+4];
+                                                        subtab[3] = tab[i+5];
+                                                        sens = atoi(subtab);
+                                                        break;
                                                     default:
                                                         break;
 
