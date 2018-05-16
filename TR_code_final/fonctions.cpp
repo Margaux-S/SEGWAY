@@ -316,7 +316,6 @@ void Envoyer(void *arg){
 
 	log_task_entered();
 
-rt_printf("6");
 	while(1){
 		//rt_printf("Thread Envoyer \n");
 		rt_task_wait_period(NULL);
@@ -606,11 +605,11 @@ void Communication_Android (void *arg){
                 rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
                 log_mutex_acquired(&var_mutex_consigne_couple);
 
-                consigne_couple.set_consigne(puissance*7*0.80435);
+                consigne_couple.set_consigne(puissance*4*0.80435);
 
                 rt_mutex_release(&var_mutex_consigne_couple);
                 log_mutex_released(&var_mutex_consigne_couple);
-                //rt_printf("Puissance set \n");
+                rt_printf("Puissance set à %f\n", puissance*4*0.80435);
 	} //while 
         
         if(read_size == 0)
