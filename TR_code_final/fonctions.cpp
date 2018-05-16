@@ -315,10 +315,11 @@ void Envoyer(void *arg){
 	rt_task_set_periodic(NULL, TM_NOW, 10000000);
 
 	log_task_entered();
-        message_stm m;
+        
 	while(1){
 		//rt_printf("Thread Envoyer \n");
 		rt_task_wait_period(NULL);
+                message_stm m;
 
 		
 		int err = rt_queue_read(&queue_Msg2STM,&m,sizeof(message_stm),SECENTOP / 10000);
@@ -333,7 +334,7 @@ void Envoyer(void *arg){
 		}
                 rt_printf("J'envoie %f au STM32 \n", m.fval);
                 int errr = rt_queue_free(&queue_Msg2STM,&m);
-
+                free(m);
 		/*log_sem_waiting(&var_sem_envoyer);
 		rt_sem_p(&var_sem_envoyer,TM_INFINITE);
 		log_sem_entered(&var_sem_envoyer);
