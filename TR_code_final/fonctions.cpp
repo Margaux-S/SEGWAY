@@ -79,7 +79,7 @@ void Asservissement(void *arg) /* OK */
 				rt_mutex_release(&var_mutex_etat_reception);
 				log_mutex_released(&var_mutex_etat_reception);
 
-				int err=0;
+				/*int err=0;
 				message_stm m;
 				m.label = 'c';
                                // m.fval = c;
@@ -91,9 +91,9 @@ void Asservissement(void *arg) /* OK */
                                     m.fval = c;
 				}
                                 
-                                err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
+                                err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);*/
 
-				rt_sem_v(&var_sem_envoyer);
+				//rt_sem_v(&var_sem_envoyer);
 			}
 		}
 	}
@@ -151,7 +151,6 @@ void Asservissement(void *arg) /* OK */
 
 	log_task_entered();
 
-rt_printf("3");
 	while (1) {
     	//rt_printf("Thread Batterie \n");
 		rt_task_wait_period(NULL);
@@ -273,7 +272,13 @@ void Arret_Urgence(void *arg){
         
 	while(1){
 		//rt_printf("Thread Arret \n");
+                rt_mutex_acquire(&var_mutex_arret, TM_INFINITE);
+                log_mutex_acquired(&var_mutex_arret);
 
+                arret = 0;
+
+                rt_mutex_release(&var_mutex_arret);
+                log_mutex_released(&var_mutex_arret);
 		log_sem_waiting(&var_sem_arret);
 		rt_sem_p(&var_sem_arret,TM_INFINITE);
 		log_sem_entered(&var_sem_arret);
@@ -286,13 +291,7 @@ void Arret_Urgence(void *arg){
 		rt_mutex_release(&var_mutex_etat_android);
 		log_mutex_released(&var_mutex_etat_android);
                 
-		rt_mutex_acquire(&var_mutex_arret, TM_INFINITE);
-		log_mutex_acquired(&var_mutex_arret);
-
-		arret = 1;
-
-		rt_mutex_release(&var_mutex_arret);
-		log_mutex_released(&var_mutex_arret);
+		
 
 		int err=0;
 		message_stm m;
@@ -300,7 +299,14 @@ void Arret_Urgence(void *arg){
 		m.ival = 1;
                 
                 if (not(android)){
-                    err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
+                    rt_mutex_acquire(&var_mutex_arret, TM_INFINITE);
+                    log_mutex_acquired(&var_mutex_arret);
+
+                    arret = 1;
+
+                    rt_mutex_release(&var_mutex_arret);
+                    log_mutex_released(&var_mutex_arret);
+                    //err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
                 }
 		/*log_sem_signaled(&var_sem_envoyer);
 		rt_sem_v(&var_sem_envoyer);*/
@@ -338,13 +344,25 @@ void Envoyer(void *arg){
                 if (noerror){
                     noerror = 0;
                     send_float_to_serial(consigne_couple.consigne(),'c');
+                    rt_printf("J'envoie %f au STM32 \n", consigne_couple.consigne());
                 } else {
                     send_float_to_serial(consigne_couple.consigne()+0.1,'c');
+                    rt_printf("J'envoie %f au STM32 \n", consigne_couple.consigne()+0.1);
                     noerror = 1;
                 }
-                rt_printf("J'envoie %f au STM32 \n", consigne_couple.consigne());
+                
 		rt_mutex_release(&var_mutex_consigne_couple);
 		log_mutex_released(&var_mutex_consigne_couple);
+                
+                rt_mutex_acquire(&var_mutex_arret, TM_INFINITE);
+                log_mutex_acquired(&var_mutex_arret);
+
+                if (arret) {
+                    send_int_to_serial(arret,'a');
+                }
+
+                rt_mutex_release(&var_mutex_arret);
+                log_mutex_released(&var_mutex_arret);
                 
                 
 
