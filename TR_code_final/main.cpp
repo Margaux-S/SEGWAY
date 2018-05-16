@@ -194,12 +194,12 @@ void startTasks() {
 		rt_printf("Error task start: %s\n", strerror(-err));
 		exit(EXIT_FAILURE);
 	}
-	
+	*/
 	if (err = rt_task_start(&th_Envoyer, &Envoyer, NULL)){
 		rt_printf("Error task start: %s\n", strerror(-err));
 		exit(EXIT_FAILURE);
 	}
-
+/*
 	if (err = rt_task_start(&th_Arret_Urgence, &Arret_Urgence, NULL)){
 		rt_printf("Error task start: %s\n", strerror(-err));
 		exit(EXIT_FAILURE);
@@ -222,8 +222,8 @@ void deleteTasks() {
 	rt_task_delete(&th_Surveillance_Batterie);
 
 	rt_task_delete(&th_Presence_User);
-
-	rt_task_delete(&th_Envoyer);
+;*/
+	rt_task_delete(&th_Envoyer)/*
 
 	rt_task_delete(&th_Arret_Urgence);*/
 

@@ -614,6 +614,20 @@ void Communication_Android (void *arg){
                 rt_mutex_release(&var_mutex_consigne_couple);
                 log_mutex_released(&var_mutex_consigne_couple);
                 rt_printf("Puissance set à %f\n", puissance*4*0.80435);
+                int err=0;
+                message_stm m;
+                m.label = 'c';
+               // m.fval = c;
+                if (noerror){
+                    noerror = 0;
+                    m.fval = puissance*4*0.80435+0.1;
+                } else {
+                    noerror = 1;
+                    m.fval = puissance*4*0.80435;
+                }
+
+                err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
+                
 	} //while 
         
         if(read_size == 0)
