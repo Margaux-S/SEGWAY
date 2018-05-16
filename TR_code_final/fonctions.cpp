@@ -334,7 +334,7 @@ void Envoyer(void *arg){
 		}
                 rt_printf("J'envoie %f au STM32 \n", m.fval);
                 int errr = rt_queue_free(&queue_Msg2STM,&m);
-                free(m);
+                free(&m);
 		/*log_sem_waiting(&var_sem_envoyer);
 		rt_sem_p(&var_sem_envoyer,TM_INFINITE);
 		log_sem_entered(&var_sem_envoyer);
