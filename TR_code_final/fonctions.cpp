@@ -23,44 +23,44 @@ void Asservissement(void *arg) /* OK */
 		rt_task_wait_period(NULL);
 
 		rt_mutex_acquire(&var_mutex_etat_com, TM_INFINITE);
-		//log_mutex_acquired(&var_mutex_etat_com);
+		log_mutex_acquired(&var_mutex_etat_com);
 		com = etat_com;
 		rt_mutex_release(&var_mutex_etat_com);
 		log_mutex_released(&var_mutex_etat_com);
                 
                 rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
-                //log_mutex_acquired(&var_mutex_etat_android);
+                log_mutex_acquired(&var_mutex_etat_android);
 
                 android = etat_android;
 
                 rt_mutex_release(&var_mutex_etat_android);
-                //log_mutex_released(&var_mutex_etat_android);
+                log_mutex_released(&var_mutex_etat_android);
              
 
 		if (com){
 
 			rt_mutex_acquire(&var_mutex_etat_angle, TM_INFINITE);
-			//log_mutex_acquired(&var_mutex_etat_angle);
+			log_mutex_acquired(&var_mutex_etat_angle);
 
 			angle = etat_angle.angle();
 			vit_angulaire = etat_angle.vitesse_ang();
 
 			rt_mutex_release(&var_mutex_etat_angle);
-			//log_mutex_released(&var_mutex_etat_angle);
+			log_mutex_released(&var_mutex_etat_angle);
 
 			rt_mutex_acquire(&var_mutex_etat_reception, TM_INFINITE);
-			//log_mutex_acquired(&var_mutex_etat_reception);
+			log_mutex_acquired(&var_mutex_etat_reception);
 
 			com = etat_reception;
 
 			rt_mutex_release(&var_mutex_etat_reception);
-			//log_mutex_released(&var_mutex_etat_reception);
+			log_mutex_released(&var_mutex_etat_reception);
 
 			if(com) {
 				
 
 				rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
-				//log_mutex_acquired(&var_mutex_consigne_couple);
+				log_mutex_acquired(&var_mutex_consigne_couple);
                                 
                                 if (not(android)){
                                     c = (k1 * angle + k2 * vit_angulaire);
@@ -69,15 +69,15 @@ void Asservissement(void *arg) /* OK */
                                     c = consigne_couple.consigne();
                                 }    
 				rt_mutex_release(&var_mutex_consigne_couple);
-				//log_mutex_released(&var_mutex_consigne_couple);
+				log_mutex_released(&var_mutex_consigne_couple);
 
 				rt_mutex_acquire(&var_mutex_etat_reception, TM_INFINITE);
-				//log_mutex_acquired(&var_mutex_etat_reception);
+				log_mutex_acquired(&var_mutex_etat_reception);
 
 		  		etat_reception = 0 ;
 
 				rt_mutex_release(&var_mutex_etat_reception);
-				//log_mutex_released(&var_mutex_etat_reception);
+				log_mutex_released(&var_mutex_etat_reception);
 
 				int err=0;
 				message_stm m;
@@ -604,12 +604,12 @@ void Communication_Android (void *arg){
 		//rt_printf("Puissance : %f \nAngle : %f \nSens : %d \n", puissance, angle, sens);
                 
                 rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
-                //log_mutex_acquired(&var_mutex_consigne_couple);
+                log_mutex_acquired(&var_mutex_consigne_couple);
 
                 consigne_couple.set_consigne(puissance*7*0.80435);
 
                 rt_mutex_release(&var_mutex_consigne_couple);
-                //log_mutex_released(&var_mutex_consigne_couple);
+                log_mutex_released(&var_mutex_consigne_couple);
                 //rt_printf("Puissance set \n");
 	} //while 
         
@@ -627,7 +627,7 @@ void Communication_Android (void *arg){
         }
         else if(read_size == -1)
         {
-            perror("recv failed\n");
+            rt_printf("recv failed\n");
             rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
             log_mutex_acquired(&var_mutex_etat_android);
 
