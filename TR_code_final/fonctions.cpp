@@ -593,6 +593,8 @@ void Communication_Android (void *arg){
 									subtab[3] = tab[i+5];
 									sens = atoi(subtab);
 									break;
+                                                    default:
+                                                        break;
 
 						}//case
 					}//<\n
