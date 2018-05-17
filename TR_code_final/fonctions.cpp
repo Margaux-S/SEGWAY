@@ -559,6 +559,9 @@ void Communication_Android (void *arg){
             rt_task_wait_period(NULL);
             //rt_printf("Reception message \n");
 		taille=strlen((char*)string);
+                rt_printf("%d\n",taille);
+                for(int i= 0; i < 23 ; i++)
+                    rt_printf("%c\n", string[i]);
 		/*if(taille > 0){
 			memcpy(tab,string,taille);	//Si le message n'est pas vide, on copie ces informations dans tab
 
@@ -601,7 +604,7 @@ void Communication_Android (void *arg){
                                         
 			} //for
 		} //if taille*/
-                rt_printf("%d\n",taille);
+                
                 /*if (sens == -1) {
                     puissance = -puissance;
                 }
