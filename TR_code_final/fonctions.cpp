@@ -598,7 +598,7 @@ void Communication_Android (void *arg){
 
 						}//case
 					}//<\n
-                                        rt_printf("%d",len);
+                                        rt_printf("%d\n",taille);
 			} //for
 		} //if taille
                 if (sens == -1) {
