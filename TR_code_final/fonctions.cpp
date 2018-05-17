@@ -559,7 +559,7 @@ void Communication_Android (void *arg){
             rt_task_wait_period(NULL);
             //rt_printf("Reception message \n");
 		taille=strlen((char*)string);
-		if(taille > 0){
+		/*if(taille > 0){
 			memcpy(tab,string,taille);	//Si le message n'est pas vide, on copie ces informations dans tab
 
 			for(i=0 ; i<len ; i++){
@@ -598,10 +598,11 @@ void Communication_Android (void *arg){
 
 						}//case
 					}//<\n
-                                        rt_printf("%d\n",taille);
+                                        
 			} //for
-		} //if taille
-                if (sens == -1) {
+		} //if taille*/
+                rt_printf("%d\n",taille);
+                /*if (sens == -1) {
                     puissance = -puissance;
                 }
 		//rt_printf("Puissance : %f \nAngle : %f \nSens : %d \n", puissance, angle, sens);
@@ -615,7 +616,7 @@ void Communication_Android (void *arg){
                 log_mutex_released(&var_mutex_consigne_couple);
                 rt_printf("Puissance set à %f\n", puissance*4*0.80435);
                 
-                
+                */
 	} //while 
         rt_printf("Out of the while loop\n");
         if(read_size <= 0)
