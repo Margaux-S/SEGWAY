@@ -616,8 +616,8 @@ void Communication_Android (void *arg){
                 
                 
 	} //while 
-        
-        if(read_size == 0)
+        rt_printf("Out of the while loop\n");
+        if(read_size <= 0)
         {
             rt_printf("Client disconnected\n");
             rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
