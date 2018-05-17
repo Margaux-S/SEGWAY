@@ -546,7 +546,7 @@ void Communication_Android (void *arg){
     rt_mutex_release(&var_mutex_consigne_couple);
     log_mutex_released(&var_mutex_consigne_couple);
     rt_printf("Mutex done \n");
-    int MAX_SIZE = 1024;
+    int MAX_SIZE = 21;
     int len,i,taille;
     char tab[MAX_SIZE];
     char subtab[3];
@@ -556,10 +556,10 @@ void Communication_Android (void *arg){
 	/* lecture d'un message de taille max MAX_SIZE, information dans string */
  	//len = read(sckt, string, MAX_SIZE);
 	while( (len = recv(client_sock , string , MAX_SIZE , 0)) > 0 ){
-            rt_task_wait_period(NULL);
+            //rt_task_wait_period(NULL);
             //rt_printf("Reception message \n");
 		taille=strlen((char*)string);
-                //rt_printf("%d\n",taille);
+                rt_printf("taille : %d\n",taille);
                 for(int i= 0; i < 21 ; i++)
                     rt_printf("%d - ", string[i]);
                 rt_printf("\n");
