@@ -22,6 +22,7 @@ int main(void){
 	initStruct();
 	startTasks();
 	pause();
+        printf("pause\n");
 	deleteTasks();
 	stop_recording();
 	return 0;
