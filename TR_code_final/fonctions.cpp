@@ -562,7 +562,7 @@ void Communication_Android (void *arg){
 		if(taille > 0){
 			memcpy(tab,string,taille);	//Si le message n'est pas vide, on copie ces informations dans tab
 
-			for(i=0 ; i+7<len ; i+7){
+			for(i=0 ; i<len ; i++){
 					if((tab[i] == '<')&&(tab[i+6] == '\n')){
 						switch (tab[i+1]){
 							//puissance
@@ -598,6 +598,7 @@ void Communication_Android (void *arg){
 
 						}//case
 					}//<\n
+                                        rt_printf("%c",tab[i+6]);
 			} //for
 		} //if taille
                 if (sens == -1) {
