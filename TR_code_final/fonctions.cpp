@@ -561,7 +561,7 @@ void Communication_Android (void *arg){
 		taille=strlen((char*)string);
                 //rt_printf("%d\n",taille);
                 for(int i= 0; i < 21 ; i++)
-                    rt_printf("%c", string[i]);
+                    rt_printf("%d", string[i]);
                 rt_printf("\n");
 		/*if(taille > 0){
 			memcpy(tab,string,taille);	//Si le message n'est pas vide, on copie ces informations dans tab
