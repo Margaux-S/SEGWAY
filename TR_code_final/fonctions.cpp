@@ -545,7 +545,10 @@ void Communication_Android (void *arg){
                             }//case
                         } //<\n                    
                     } //for
-                    rt_printf("P : %f, A : %f, S : %d \n", puissance, angle, sens);
+                    //rt_printf("P : %f, A : %f, S : %d \n", puissance, angle, sens);
+                        if (!sens){
+                            puissance = -puissance;
+                        }
                     rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
                     log_mutex_acquired(&var_mutex_consigne_couple);
 
