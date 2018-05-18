@@ -58,7 +58,7 @@ void Write_log(void *arg)
 							asprintf(&line, "[%d ms] [SEM] %s: sem: %s => %s (%d waiters)\n", m.time, m.task_name, m.sarg0, m.event, m.iarg0);
 						}
 						else if (m.type == TASK){
-							asprintf(&line, "[%d ms] [TASK] %s => %s (prio : %d)\n", m.time, m.task_name,  m.event, m.iarg0, m.iarg1);
+							asprintf(&line, "[%d ms] [TASK] %s => %s by %s (prio : %d)\n", m.time, m.task_name,  m.event, m.iarg0, m.iarg1);
 						}
 						else if (m.type == TASK_DELETE){
 							asprintf(&line, "[%d ms] [TASK] %s => %s by %s (prio : %d)\n", m.time, m.task_name, m.event,m.sarg0, m.iarg0);
