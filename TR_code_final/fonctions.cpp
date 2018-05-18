@@ -569,7 +569,7 @@ void Communication_Android (void *arg){
             etat_android = 0;
 
             rt_mutex_release(&var_mutex_etat_android);
-            log_mutex_released(&var_mutex_etat_android)
+            log_mutex_released(&var_mutex_etat_android);
         }
 }
     
