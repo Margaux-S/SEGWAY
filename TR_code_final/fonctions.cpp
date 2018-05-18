@@ -450,204 +450,127 @@ rt_printf("8");
 
 void Communication_Android (void *arg){
     
-   /* rt_printf("Thread ANDROID : Debut de l'éxecution\n");
+    rt_printf("Thread ANDROID : Debut de l'éxecution\n");
     log_task_entered();
-    
-    float puissance = 0.0;
-    float angle = 0.0;
-    int sens = 0;
-    int socket_desc;
-    
-    socket_desc = init_socket_server();
-    
-    while (1){
-        
-        
-        
-        
-        update_values(socket_desc, puissance, angle, sens);
-        
-        rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
-        log_mutex_acquired(&var_mutex_etat_android);
-
-        etat_android = 0;
-
-        rt_mutex_release(&var_mutex_etat_android);
-        log_mutex_released(&var_mutex_etat_android);
-        
-        
-        
-    }
-    */
-    
-    
-    rt_printf("Thread ANDROID : Debut de l'éxecution de periodique à 100 Hz\n");
-    rt_task_set_periodic(NULL, TM_NOW, 10000000);
-
-    log_task_entered();
-    
     float puissance = 0.0;
     float angle = 0.0;
     int socket_desc , client_sock , c , read_size, sens;
     struct sockaddr_in server , client;
-    char client_message[2000];
 
     //Create socket
     socket_desc = socket(AF_INET , SOCK_STREAM , 0);
-    if (socket_desc == -1)
-    {
+    if (socket_desc == -1){
         rt_printf("Could not create socket\n");
+    } else {
+        rt_printf("Socket created\n");
     }
-    rt_printf("Socket created\n");
-
+    
     //Prepare the sockaddr_in structure
     server.sin_family = AF_INET;
     server.sin_addr.s_addr = INADDR_ANY;
     server.sin_port = htons( 8888 );
 
     //Bind
-    if( bind(socket_desc,(struct sockaddr *)&server , sizeof(server)) < 0)
-    {
-        //print the error message
-        perror("bind failed. Error\n");
-        //return 1;
+    if( bind(socket_desc,(struct sockaddr *)&server , sizeof(server)) < 0){
+        rt_printf("bind failed. Error\n");
+    } else{
+        rt_printf("bind done\n");
     }
-    rt_printf("bind done\n");
-	while (1){
-    //Listen
-    listen(socket_desc , 3);
+    while (1){
+        //Listen
+        listen(socket_desc , 3);
 
-    //Accept and incoming connection
-    rt_printf("Waiting for incoming connections...\n");
-    c = sizeof(struct sockaddr_in);
+        //Accept and incoming connection
+        rt_printf("Waiting for incoming connections...\n");
+        c = sizeof(struct sockaddr_in);
 
-    //accept connection from an incoming client
-    client_sock = accept(socket_desc, (struct sockaddr *)&client, (socklen_t*)&c);
-    if (client_sock < 0)
-    {
-        perror("accept failed\n");
-        //return 1;
-    }
-    rt_printf("Connection accepted\n");
-	       
-    
-    rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
-    log_mutex_acquired(&var_mutex_consigne_couple);
-
-    consigne_couple.set_consigne(0.001);
-    
-    rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
-    log_mutex_acquired(&var_mutex_etat_android);
-
-    etat_android = 1;
-
-    rt_mutex_release(&var_mutex_etat_android);
-    log_mutex_released(&var_mutex_etat_android);
-    rt_mutex_release(&var_mutex_consigne_couple);
-    log_mutex_released(&var_mutex_consigne_couple);
-    rt_printf("Mutex done \n");
-    int MAX_SIZE = 21;
-    int len,i,taille;
-    char tab[MAX_SIZE];
-    char subtab[3];
-    char string[MAX_SIZE];
-    float data;
-
-	/* lecture d'un message de taille max MAX_SIZE, information dans string */
- 	//len = read(sckt, string, MAX_SIZE);
-	while( (len = recv(client_sock , string , MAX_SIZE , 0)) > 0 ){
-            //rt_task_wait_period(NULL);
-            //rt_printf("Reception message \n");
-		taille=strlen((char*)string);
-                rt_printf("taille : %d\n",taille);
-                for(int i= 0; i < 21 ; i++)
-                    rt_printf("%d - ", string[i]);
-                rt_printf("\n");
-		/*if(taille > 0){
-			memcpy(tab,string,taille);	//Si le message n'est pas vide, on copie ces informations dans tab
-
-			for(i=0 ; i<len ; i++){
-					if((tab[i] == '<')&&(tab[i+6] == '\n')){
-						switch (tab[i+1]){
-							//puissance
-                                                    case 'p':
-                                                        //memcpy(&data,&tab[i+2],sizeof(data));
-                                                        subtab[0] = tab[i+2];
-                                                        subtab[1] = tab[i+3];
-                                                        subtab[2] = tab[i+4];
-                                                        subtab[3] = tab[i+5];
-                                                        puissance = atof(subtab); 
-                                                        break;
-                                                    //angle		
-                                                    case 'a':
-                                                        //memcpy(&data,&tab[i+2],sizeof(data));
-                                                        subtab[0] = tab[i+2];
-                                                        subtab[1] = tab[i+3];
-                                                        subtab[2] = tab[i+4];
-                                                        subtab[3] = tab[i+5];
-                                                        angle = atof(subtab); 
-                                                        break;
-                                                    //sens
-                                                    case 's':
-                                                        //puts("S \n");
-                                                        //memcpy(&data,&tab[i+2],sizeof(data));
-                                                        subtab[0] = tab[i+2];
-                                                        subtab[1] = tab[i+3];
-                                                        subtab[2] = tab[i+4];
-                                                        subtab[3] = tab[i+5];
-                                                        sens = atoi(subtab);
-                                                        break;
-                                                    default:
-                                                        break;
-
-						}//case
-					}//<\n
-                                        
-			} //for
-		} //if taille*/
-                
-                /*if (sens == -1) {
-                    puissance = -puissance;
-                }
-		//rt_printf("Puissance : %f \nAngle : %f \nSens : %d \n", puissance, angle, sens);
-                
-                rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
-                log_mutex_acquired(&var_mutex_consigne_couple);
-
-                consigne_couple.set_consigne(puissance*4*0.80435);
-
-                rt_mutex_release(&var_mutex_consigne_couple);
-                log_mutex_released(&var_mutex_consigne_couple);
-                rt_printf("Puissance set à %f\n", puissance*4*0.80435);
-                
-                */
-	} //while 
-        rt_printf("Out of the while loop\n");
-        if(read_size <= 0)
+        //accept connection from an incoming client
+        client_sock = accept(socket_desc, (struct sockaddr *)&client, (socklen_t*)&c);
+        if (client_sock < 0)
         {
-            rt_printf("Client disconnected\n");
+            rt_printf("accept failed\n");
+        } else {
+            rt_printf("Connection accepted\n");
+        }
+        rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
+        log_mutex_acquired(&var_mutex_consigne_couple);
+
+        consigne_couple.set_consigne(0.001);
+
+        rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
+        log_mutex_acquired(&var_mutex_etat_android);
+
+        etat_android = 1;
+
+        rt_mutex_release(&var_mutex_etat_android);
+        log_mutex_released(&var_mutex_etat_android);
+        rt_mutex_release(&var_mutex_consigne_couple);
+        log_mutex_released(&var_mutex_consigne_couple);
+        int MAX_SIZE = 100;
+        int i, len;
+        char tab[MAX_SIZE];
+        char subtab[4];
+        char senstab[2];
+        char string[MAX_SIZE];
+            /* lecture d'un message de taille max MAX_SIZE, information dans string */
+            while( (len = recv(client_sock , string , MAX_SIZE , 0)) > 0 ){
+                    read_size=strlen((char*)string);
+                    if(read_size > 0){
+                        memcpy(tab,string,read_size);	//Si le message n'est pas vide, on copie ces informations dans tab
+                        for(i=0 ; i<(read_size-1) ; i++){
+                            if(tab[i] == '<'){
+                                switch (tab[i+1]){
+                                    //puissance
+                                    case 'p':
+                                            subtab[0] =  tab[i+2];
+                                            subtab[1] =  tab[i+3];
+                                            subtab[2] =  tab[i+4];
+                                            subtab[3] =  tab[i+5];
+                                            puissance = atof(subtab);
+                                            break;
+                                    //angle		
+                                    case 'a':
+                                            subtab[0] =  tab[i+2];
+                                            subtab[1] =  tab[i+3];
+                                            subtab[2] =  tab[i+4];
+                                            subtab[3] =  tab[i+5];
+                                            angle = atof(subtab); 
+                                            break;
+                                    //sens
+                                    case 's':
+
+                                            senstab[0] = tab[i+2];
+                                            sens = atoi(senstab);
+                                            break;
+                            }//case
+                        } //<\n                    
+                    } //for
+                    rt_printf("P : %f, A : %f, S : %d \n", puissance, angle, sens);
+                    rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
+                    log_mutex_acquired(&var_mutex_consigne_couple);
+
+                    consigne_couple.set_consigne(puissance*4*0.80435);
+
+                    rt_mutex_release(&var_mutex_consigne_couple);
+                    log_mutex_released(&var_mutex_consigne_couple);
+                } //if taille*/    
+            } //while 
+            if(len <= 0)
+            {
+                printf("Client disconnected\n");
+            }
+            else if(len == -1)
+            {
+                printf("recv failed\n");
+            }
             rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
             log_mutex_acquired(&var_mutex_etat_android);
 
             etat_android = 0;
 
             rt_mutex_release(&var_mutex_etat_android);
-            log_mutex_released(&var_mutex_etat_android);
-            fflush(stdout);
+            log_mutex_released(&var_mutex_etat_android)
         }
-        else if(read_size == -1)
-        {
-            rt_printf("recv failed\n");
-            rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
-            log_mutex_acquired(&var_mutex_etat_android);
-
-            etat_android = 0;
-
-            rt_mutex_release(&var_mutex_etat_android);
-            log_mutex_released(&var_mutex_etat_android);
-        }
-    }
-
 }
     
         
