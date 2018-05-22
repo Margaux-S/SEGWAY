@@ -244,7 +244,7 @@ void log_mutex_generic(RT_MUTEX * mut, const char * event){
 		rt_mutex_inquire(mut, &mut_info);
 
 		init_message(&m, MUTEX, get_time_ms(), task_info.name, event, mut_info.name,NULL, NULL, 0,0);
-		write_in_queue(&log_queue,&m,sizeof(message_log));
+		write_in_queue(log_queue,&m,sizeof(message_log));
 	}
 }
 
@@ -293,7 +293,7 @@ void log_sem_generic(RT_SEM * sem, const char * event){
 		rt_sem_inquire(sem, &sem_info);
 		if(err ==0){
 			init_message(&m, SEM, get_time_ms(), task_info.name, event, sem_info.name,NULL, NULL,sem_info.nwaiters,0);
-			write_in_queue(&log_queue,&m,sizeof(message_log));
+			write_in_queue(log_queue,&m,sizeof(message_log));
 		}
 	}
 
@@ -341,7 +341,7 @@ void log_task_generic(RT_TASK * task,  const char * event){
 		int err = rt_task_inquire(task, &self_task_info);
 		if(err==0){
 			init_message(&m, TASK, get_time_ms(), self_task_info.name, event, NULL,NULL, NULL,self_task_info.prio, 0);
-			write_in_queue(&log_queue,&m,sizeof(message_log));
+			write_in_queue(log_queue,&m,sizeof(message_log));
 		}
 		else if (err == -EINVAL){
 			rt_printf("NO VALID DESCRIPTOR OR PRIO INVALID\n");
@@ -401,7 +401,7 @@ void log_task_deleted(RT_TASK * task){
 			int err_param = rt_task_inquire(task, &param_task_info);
 			if(err_param==0){
 				init_message(&m, TASK_DELETE, get_time_ms(), param_task_info.name, "deleted", self_task_info.name,NULL, NULL,param_task_info.prio, 0);
-				write_in_queue(&log_queue,&m,sizeof(message_log));
+				write_in_queue(log_queue,&m,sizeof(message_log));
 			}
 		}
 	}
