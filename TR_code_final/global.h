@@ -41,7 +41,7 @@ typedef struct{
 #define PRIORITY_TH_PRESENCEUSER 75
 #define PRIORITY_TH_ENVOYER 90
 #define PRIORITY_TH_ARRET_URGENCE 95
-#define PRIORITY_TH_COMMUNICATION_ANDROID 82
+#define PRIORITY_TH_COMMUNICATION_ANDROID 79
 
 /* Variables partagées *********************/
 extern int arret;
