@@ -84,11 +84,12 @@ void Asservissement(void *arg) /* OK */
 				message_stm m;
 				m.label = 'c';
                                 m.fval = c;
-                                
+                                rt_printf("Je vais envoyer %f \n", m.fval);
                                 if (not(android)){
                                     err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
+                                    rt_printf("J'envoie \n");
                                 }
-				rt_sem_v(&var_sem_envoyer);
+				//rt_sem_v(&var_sem_envoyer);
 			}
 		}
 	}
@@ -487,10 +488,7 @@ void Communication_Android (void *arg){
         } else {
             rt_printf("Connection accepted\n");
         }
-        rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
-        log_mutex_acquired(&var_mutex_consigne_couple);
-
-        consigne_couple.set_consigne(0.001);
+        
 
         rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
         log_mutex_acquired(&var_mutex_etat_android);
@@ -499,8 +497,6 @@ void Communication_Android (void *arg){
 
         rt_mutex_release(&var_mutex_etat_android);
         log_mutex_released(&var_mutex_etat_android);
-        rt_mutex_release(&var_mutex_consigne_couple);
-        log_mutex_released(&var_mutex_consigne_couple);
         int MAX_SIZE = 100;
         int i, len;
         int noerror = 0;
