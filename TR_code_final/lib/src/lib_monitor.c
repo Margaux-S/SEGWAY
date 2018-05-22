@@ -152,7 +152,7 @@ void stop_recording(){
 	 * \param int size : the size of the data
 	 * \return the error code return by the rt_queue
      */
-int write_in_queue(RT_QUEUE *msg_queue, void * buf, int size) {
+int write_in_queue(RT_QUEUE msg_queue, void * buf, int size) {
 	int err=0;
 
 	err = rt_queue_write(msg_queue,buf,size,Q_NORMAL);
