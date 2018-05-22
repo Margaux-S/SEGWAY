@@ -12,7 +12,6 @@ void Asservissement(void *arg) /* OK */
 	float angle, vit_angulaire, c;
 	int com, android;
 	int uart0_filestream;
-        int noerror = 0;
 
 	rt_printf("Thread Asservissement: Debut de l'exécution de periodique à 50 Hz\n");
 	rt_task_set_periodic(NULL, TM_NOW, 20000000);
@@ -548,6 +547,7 @@ void Communication_Android (void *arg){
                         }
                     float c = puissance*4*0.80435;
                     int err=0;
+                    int noerror = 0;
                     message_stm m;
                     m.label = 'c';
                     if (noerror){
