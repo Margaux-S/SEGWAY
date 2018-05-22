@@ -540,7 +540,6 @@ void Communication_Android (void *arg){
                             }//case
                         } //<\n                    
                     } //for
-                    rt_printf("P : %f, A : %f, S : %d \n", puissance, angle, sens);
                         if (!sens){
                             puissance = -puissance;
                         }
@@ -557,7 +556,7 @@ void Communication_Android (void *arg){
                         m.fval = c;
                     }
                     err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
-          
+                    rt_printf("J'envoie %f au stm32\n", m.fval);
                     
                 } //if taille*/    
             } //while 
