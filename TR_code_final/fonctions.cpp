@@ -59,17 +59,19 @@ void Asservissement(void *arg) /* OK */
 			if(com) {
 				
 
-				rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
-				log_mutex_acquired(&var_mutex_consigne_couple);
+				
                                 
                                 if (not(android)){
+                                    rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
+                                    log_mutex_acquired(&var_mutex_consigne_couple);
+                                    
                                     c = (k1 * angle + k2 * vit_angulaire);
                                     consigne_couple.set_consigne(c);
-                                } else {
-                                    c = consigne_couple.consigne();
-                                }    
-				rt_mutex_release(&var_mutex_consigne_couple);
-				log_mutex_released(&var_mutex_consigne_couple);
+                                    
+                                    rt_mutex_release(&var_mutex_consigne_couple);
+                                    log_mutex_released(&var_mutex_consigne_couple);
+                                } 
+				
 
 				rt_mutex_acquire(&var_mutex_etat_reception, TM_INFINITE);
 				log_mutex_acquired(&var_mutex_etat_reception);
@@ -82,17 +84,11 @@ void Asservissement(void *arg) /* OK */
 				int err=0;
 				message_stm m;
 				m.label = 'c';
-                               // m.fval = c;
-                                if (noerror){
-                                    noerror = 0;
-                                    m.fval = c+0.1;
-                                } else {
-                                    noerror = 1;
-                                    m.fval = c;
-				}
+                                m.fval = c;
                                 
-                                err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
-
+                                if (not(android)){
+                                    err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
+                                }
 				rt_sem_v(&var_sem_envoyer);
 			}
 		}
@@ -550,13 +546,21 @@ void Communication_Android (void *arg){
                         if (!sens){
                             puissance = -puissance;
                         }
-                    rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
-                    log_mutex_acquired(&var_mutex_consigne_couple);
-
-                    consigne_couple.set_consigne(puissance*4*0.80435);
-
-                    rt_mutex_release(&var_mutex_consigne_couple);
-                    log_mutex_released(&var_mutex_consigne_couple);
+                    float c = puissance*4*0.80435;
+                    int err=0;
+                    message_stm m;
+                    m.label = 'c';
+                    if (noerror){
+                        noerror = 0;
+                        m.fval = c+0.1;
+                    } else {
+                        noerror = 1;
+                        m.fval = c;
+                    }
+                    if (not(android)){
+                        err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
+                    }
+                    
                 } //if taille*/    
             } //while 
             if(len <= 0)
