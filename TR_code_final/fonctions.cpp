@@ -66,7 +66,7 @@ void Asservissement(void *arg) /* OK */
                                     
                                     c = (k1 * angle + k2 * vit_angulaire);
                                     consigne_couple.set_consigne(c);
-                                    
+                                    rt_printf("consigne :  %f", c);
                                     rt_mutex_release(&var_mutex_consigne_couple);
                                     log_mutex_released(&var_mutex_consigne_couple);
                                 } 
