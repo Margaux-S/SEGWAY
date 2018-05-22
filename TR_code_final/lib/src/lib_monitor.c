@@ -155,7 +155,7 @@ void stop_recording(){
 int write_in_queue(RT_QUEUE msg_queue, void * buf, int size) {
 	int err=0;
 
-	err = rt_queue_write(msg_queue,buf,size,Q_NORMAL);
+	err = rt_queue_write(&msg_queue,buf,size,Q_NORMAL);
 	if (err<0){
 		switch(err){
 			case (-ENOMEM):
