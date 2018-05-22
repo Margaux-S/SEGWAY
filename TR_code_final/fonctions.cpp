@@ -474,7 +474,7 @@ void Communication_Android (void *arg){
     }
     while (1){
         //Listen
-        listen(socket_desc , 3);
+        listen(socket_desc , 30);
 
         //Accept and incoming connection
         rt_printf("Waiting for incoming connections...\n");
