@@ -557,9 +557,8 @@ void Communication_Android (void *arg){
                         noerror = 1;
                         m.fval = c;
                     }
-                    if (not(android)){
-                        err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
-                    }
+                    err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
+          
                     
                 } //if taille*/    
             } //while 
