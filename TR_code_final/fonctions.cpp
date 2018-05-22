@@ -84,10 +84,8 @@ void Asservissement(void *arg) /* OK */
 				message_stm m;
 				m.label = 'c';
                                 m.fval = c;
-                                rt_printf("Je vais envoyer %f \n", m.fval);
                                 if (not(android)){
                                     err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
-                                    rt_printf("J'envoie \n");
                                 }
 				//rt_sem_v(&var_sem_envoyer);
 			}
@@ -322,11 +320,13 @@ void Envoyer(void *arg){
 
 		if(m.label == 'c'){
 			send_float_to_serial(m.fval,'c');
+                        rt_printf("J'envoie une consigne %f au STM32 \n", m.fval);
 		}
 		else if(m.label == 'a'){
 			send_int_to_serial(m.ival,'a');
+                        rt_printf("J'envoie arrêt au STM32 \n");
 		}
-                //rt_printf("J'envoie %f au STM32 \n", m.fval);
+                
                 
 
 		/*log_sem_waiting(&var_sem_envoyer);
