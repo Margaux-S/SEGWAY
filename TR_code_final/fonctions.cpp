@@ -322,7 +322,7 @@ void Envoyer(void *arg){
                 rt_mutex_release(&var_mutex_etat_android);
                 log_mutex_released(&var_mutex_etat_android);
                 
-                if not(android){
+                if (not(android)){
                     if(m.label == 'c'){
                             send_float_to_serial(m.fval,'c');
                             rt_printf("J'envoie une consigne %f au STM32 \n", m.fval);
