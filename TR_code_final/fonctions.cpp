@@ -510,7 +510,6 @@ void Communication_Android (void *arg){
             /* lecture d'un message de taille max MAX_SIZE, information dans string */
             while( (len = recv(client_sock , string , MAX_SIZE , 0)) > 0 ){
                     read_size=strlen((char*)string);
-                    rt_printf("%d\n",read_size);
                     if(read_size > 0){
                         memcpy(tab,string,read_size);	//Si le message n'est pas vide, on copie ces informations dans tab
                         for(i=0 ; i<(read_size-1) ; i++){
@@ -541,7 +540,7 @@ void Communication_Android (void *arg){
                             }//case
                         } //<\n                    
                     } //for
-                    //rt_printf("P : %f, A : %f, S : %d \n", puissance, angle, sens);
+                    rt_printf("P : %f, A : %f, S : %d \n", puissance, angle, sens);
                         if (!sens){
                             puissance = -puissance;
                         }
