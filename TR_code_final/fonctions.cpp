@@ -545,7 +545,7 @@ void Communication_Android (void *arg){
                             }//case
                         } //<\n                    
                     } //for
-                    rt_printf("P : %f, A : %f, S : %d \n", puissance, angle, sens);
+                    //rt_printf("P : %f, A : %f, S : %d \n", puissance, angle, sens);
                         if (!sens){
                             puissance = -puissance;
                         }
