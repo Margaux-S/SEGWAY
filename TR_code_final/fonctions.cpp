@@ -503,6 +503,7 @@ void Communication_Android (void *arg){
         log_mutex_released(&var_mutex_consigne_couple);
         int MAX_SIZE = 100;
         int i, len;
+        int noerror = 0;
         char tab[MAX_SIZE];
         char subtab[4];
         char senstab[2];
@@ -543,9 +544,9 @@ void Communication_Android (void *arg){
                         if (!sens){
                             puissance = -puissance;
                         }
-                    float c = puissance*4*0.80435;
+                    float c = puissance*4;
                     int err=0;
-                    int noerror = 0;
+                    
                     message_stm m;
                     m.label = 'c';
                     if (noerror){
