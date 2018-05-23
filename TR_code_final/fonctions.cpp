@@ -14,7 +14,7 @@ void Asservissement(void *arg) /* OK */
 
 	rt_printf("Thread Asservissement: Debut de l'exécution de periodique à 50 Hz\n");
 	rt_task_set_periodic(NULL, TM_NOW, 20000000);
-
+        
 	log_task_entered();
 	while (1) {
 	    //rt_printf("Thread Asservissement \n");
@@ -85,7 +85,7 @@ void Asservissement(void *arg) /* OK */
                                 m.fval = c;
                                 //if (not(android)){
                                     err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
-                                //}
+                                //
 			}
 		}
 	}
@@ -480,7 +480,7 @@ void Communication_Android (void *arg){
         rt_printf("bind done\n");
     }
     //Listen
-    listen(socket_desc , 3);
+    listen(socket_desc , 1);
     
     while (1){
         
@@ -553,7 +553,7 @@ void Communication_Android (void *arg){
                     int err=0;
                     
                     message_stm m;
-                    m.label = 'c';
+                    m.label = 'd';
                     if (noerror){
                         noerror = 0;
                         m.fval = c+0.1;
