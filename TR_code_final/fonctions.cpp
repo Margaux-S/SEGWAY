@@ -87,7 +87,7 @@ void Asservissement(void *arg) /* OK */
                                 printf("%d \n", android);
                                 if (not(android)){
                                     err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
-                                
+                                }
 			}
 		}
 	}
