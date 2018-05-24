@@ -27,15 +27,7 @@ void Asservissement(void *arg) /* OK */
 		rt_mutex_release(&var_mutex_etat_com);
 		log_mutex_released(&var_mutex_etat_com);
                 
-                /*rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
-                log_mutex_acquired(&var_mutex_etat_android);
-
-                android = etat_android;
-
-                rt_mutex_release(&var_mutex_etat_android);
-                log_mutex_released(&var_mutex_etat_android);*/
-             
-                //printf("%d android \n", android);
+              
 		if (com){
 
 			rt_mutex_acquire(&var_mutex_etat_angle, TM_INFINITE);
@@ -269,14 +261,6 @@ void Arret_Urgence(void *arg){
 		rt_sem_p(&var_sem_arret,TM_INFINITE);
 		log_sem_entered(&var_sem_arret);
 
-                /*rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
-		log_mutex_acquired(&var_mutex_etat_android);
-
-		android = etat_android;
-
-		rt_mutex_release(&var_mutex_etat_android);
-		log_mutex_released(&var_mutex_etat_android);
-                */
 		rt_mutex_acquire(&var_mutex_arret, TM_INFINITE);
 		log_mutex_acquired(&var_mutex_arret);
 
@@ -468,14 +452,7 @@ void Communication_Android (void *arg){
     }
     while (1){
         androidou = 0;
-        rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
-        log_mutex_acquired(&var_mutex_etat_android);
-
-        etat_android = 0;
-
-        rt_mutex_release(&var_mutex_etat_android);
-        log_mutex_released(&var_mutex_etat_android);
-        
+          
         //Listen
         listen(socket_desc , 30);
 
@@ -493,13 +470,7 @@ void Communication_Android (void *arg){
         }
         androidou = 1;
 
-        rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
-        log_mutex_acquired(&var_mutex_etat_android);
-
-        etat_android = 1;
-
-        rt_mutex_release(&var_mutex_etat_android);
-        log_mutex_released(&var_mutex_etat_android);
+       
         int MAX_SIZE = 100;
         int i, len;
         int noerror = 0;
@@ -561,11 +532,11 @@ void Communication_Android (void *arg){
             } //while 
             if(len <= 0)
             {
-                printf("Client disconnected\n");
+                rt_printf("Client disconnected\n");
             }
             else if(len == -1)
             {
-                printf("recv failed\n");
+                rt_printf("recv failed\n");
             }
             
         }
