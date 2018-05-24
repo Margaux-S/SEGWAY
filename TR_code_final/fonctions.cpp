@@ -29,7 +29,8 @@ void Asservissement(void *arg) /* OK */
                 //rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
                 //log_mutex_acquired(&var_mutex_etat_android);
 
-                //android = etat_android;
+                android = etat_android;
+                
 
                 //rt_mutex_release(&var_mutex_etat_android);
                 //log_mutex_released(&var_mutex_etat_android);
@@ -83,9 +84,10 @@ void Asservissement(void *arg) /* OK */
 				message_stm m;
 				m.label = 'c';
                                 m.fval = c;
-                                //if (not(android)){
+                                printf("%d \n", android);
+                                if (not(android)){
                                     err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
-                                //
+                                
 			}
 		}
 	}
@@ -271,9 +273,9 @@ void Arret_Urgence(void *arg){
 
                /* rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
 		log_mutex_acquired(&var_mutex_etat_android);
-
+*/
 		android = etat_android;
-
+/*
 		rt_mutex_release(&var_mutex_etat_android);
 		log_mutex_released(&var_mutex_etat_android);*/
                 
@@ -290,9 +292,9 @@ void Arret_Urgence(void *arg){
 		m.label = 'a';
 		m.ival = 1;
                 
-                //if (not(android)){
+                if (not(android)){
                     err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
-                //}
+                }
 		/*log_sem_signaled(&var_sem_envoyer);
 		rt_sem_v(&var_sem_envoyer);*/
 
@@ -313,26 +315,14 @@ void Envoyer(void *arg){
 
 		message_stm m;
 		int err = rt_queue_read(&queue_Msg2STM,&m,sizeof(message_stm),SECENTOP / 10000);
-                rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
-                log_mutex_acquired(&var_mutex_etat_android);
-
-                android = etat_android;
-
-                rt_mutex_release(&var_mutex_etat_android);
-                log_mutex_released(&var_mutex_etat_android);
                 
-                if (not(android)){
-                    if(m.label == 'c'){
-                            send_float_to_serial(m.fval,'c');
-                            rt_printf("J'envoie une consigne %f au STM32 \n", m.fval);
-                    }
-                    else if(m.label == 'a'){
-                            send_int_to_serial(m.ival,'a');
-                            rt_printf("J'envoie arrêt au STM32 \n");
-                    }
-                } else if (m.label == 'd'){
-                    send_float_to_serial(m.fval,'c');
-                    rt_printf("J'envoie une consigne %f, qui vient d'android, au STM32 \n", m.fval);
+                if(m.label == 'c'){
+                        send_float_to_serial(m.fval,'c');
+                        rt_printf("J'envoie une consigne %f au STM32 \n", m.fval);
+                }
+                else if(m.label == 'a'){
+                        send_int_to_serial(m.ival,'a');
+                        rt_printf("J'envoie arrêt au STM32 \n");
                 }
                 
 
@@ -499,13 +489,13 @@ void Communication_Android (void *arg){
         }
         
 
-        rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
-        log_mutex_acquired(&var_mutex_etat_android);
+        //rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
+        //log_mutex_acquired(&var_mutex_etat_android);
 
         etat_android = 1;
 
-        rt_mutex_release(&var_mutex_etat_android);
-        log_mutex_released(&var_mutex_etat_android);
+        //rt_mutex_release(&var_mutex_etat_android);
+        //log_mutex_released(&var_mutex_etat_android);
         int MAX_SIZE = 100;
         int i, len;
         int noerror = 0;
@@ -573,13 +563,13 @@ void Communication_Android (void *arg){
             {
                 printf("recv failed\n");
             }
-            rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
-            log_mutex_acquired(&var_mutex_etat_android);
+            //rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
+            //log_mutex_acquired(&var_mutex_etat_android);
 
             etat_android = 0;
 
-            rt_mutex_release(&var_mutex_etat_android);
-            log_mutex_released(&var_mutex_etat_android);
+            //rt_mutex_release(&var_mutex_etat_android);
+            //log_mutex_released(&var_mutex_etat_android);
         }
 }
     

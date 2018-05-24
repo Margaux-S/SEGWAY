@@ -74,7 +74,7 @@ extern RT_MUTEX var_mutex_batterie;
 extern RT_MUTEX var_mutex_presence_user ;
 extern RT_MUTEX var_mutex_etat_reception;
 extern RT_MUTEX var_mutex_arret ;
-extern RT_MUTEX var_mutex_etat_android ;
+//extern RT_MUTEX var_mutex_etat_android ;
 
 /* SEMAPHORES ******************************/
 extern RT_SEM var_sem_arret;
