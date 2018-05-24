@@ -269,13 +269,13 @@ void Arret_Urgence(void *arg){
 		rt_sem_p(&var_sem_arret,TM_INFINITE);
 		log_sem_entered(&var_sem_arret);
 
-                /*rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
+                rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
 		log_mutex_acquired(&var_mutex_etat_android);
 
 		android = etat_android;
 
 		rt_mutex_release(&var_mutex_etat_android);
-		log_mutex_released(&var_mutex_etat_android);*/
+		log_mutex_released(&var_mutex_etat_android);
                 
 		rt_mutex_acquire(&var_mutex_arret, TM_INFINITE);
 		log_mutex_acquired(&var_mutex_arret);
@@ -290,7 +290,7 @@ void Arret_Urgence(void *arg){
 		m.label = 'a';
 		m.ival = 1;
                 
-                if (not(androidou)){
+                if (not(android)){
                     err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
                 }
 		/*log_sem_signaled(&var_sem_envoyer);
@@ -467,6 +467,15 @@ void Communication_Android (void *arg){
         rt_printf("bind done\n");
     }
     while (1){
+        androidou = 0;
+        rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
+        log_mutex_acquired(&var_mutex_etat_android);
+
+        etat_android = 0;
+
+        rt_mutex_release(&var_mutex_etat_android);
+        log_mutex_released(&var_mutex_etat_android);
+        
         //Listen
         listen(socket_desc , 30);
 
@@ -558,13 +567,6 @@ void Communication_Android (void *arg){
             {
                 printf("recv failed\n");
             }
-            androidou = 0;
-            rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
-            log_mutex_acquired(&var_mutex_etat_android);
-
-            etat_android = 0;
-
-            rt_mutex_release(&var_mutex_etat_android);
-            log_mutex_released(&var_mutex_etat_android);
+            
         }
 }
