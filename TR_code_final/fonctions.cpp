@@ -27,13 +27,13 @@ void Asservissement(void *arg) /* OK */
 		rt_mutex_release(&var_mutex_etat_com);
 		log_mutex_released(&var_mutex_etat_com);
                 
-                /*rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
+                rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
                 log_mutex_acquired(&var_mutex_etat_android);
 
                 android = etat_android;
 
                 rt_mutex_release(&var_mutex_etat_android);
-                log_mutex_released(&var_mutex_etat_android);*/
+                log_mutex_released(&var_mutex_etat_android);
              
                 //printf("%d android \n", android);
 		if (com){
@@ -82,9 +82,9 @@ void Asservissement(void *arg) /* OK */
 				message_stm m;
 				m.label = 'c';
                                 m.fval = c;
-                                //if (not(android)){
+                                if (not(android)){
                                     err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
-                                //}
+                                }
 				//rt_sem_v(&var_sem_envoyer);
 			}
 		}
