@@ -27,13 +27,13 @@ void Asservissement(void *arg) /* OK */
 		rt_mutex_release(&var_mutex_etat_com);
 		log_mutex_released(&var_mutex_etat_com);
                 
-                rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
+                /*rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
                 log_mutex_acquired(&var_mutex_etat_android);
 
                 android = etat_android;
 
                 rt_mutex_release(&var_mutex_etat_android);
-                log_mutex_released(&var_mutex_etat_android);
+                log_mutex_released(&var_mutex_etat_android);*/
              
                 //printf("%d android \n", android);
 		if (com){
@@ -82,7 +82,7 @@ void Asservissement(void *arg) /* OK */
 				message_stm m;
 				m.label = 'c';
                                 m.fval = c;
-                                if (not(android)){
+                                if (not(androidou)){
                                     err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
                                 }
 				//rt_sem_v(&var_sem_envoyer);
@@ -290,9 +290,9 @@ void Arret_Urgence(void *arg){
 		m.label = 'a';
 		m.ival = 1;
                 
-                //if (not(android)){
+                if (not(androidou)){
                     err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
-                //}
+                }
 		/*log_sem_signaled(&var_sem_envoyer);
 		rt_sem_v(&var_sem_envoyer);*/
 
@@ -482,7 +482,7 @@ void Communication_Android (void *arg){
         } else {
             rt_printf("Connection accepted\n");
         }
-        
+        androidou = 1;
 
         rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
         log_mutex_acquired(&var_mutex_etat_android);
@@ -558,6 +558,7 @@ void Communication_Android (void *arg){
             {
                 printf("recv failed\n");
             }
+            androidou = 0;
             rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
             log_mutex_acquired(&var_mutex_etat_android);
 

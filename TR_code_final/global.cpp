@@ -14,6 +14,7 @@ int status = 0;
 int etat_com = 0;
 int presence_user = 1;
 int etat_android = 0;
+int androidou = 0;
 Angles etat_angle;
 Battery batterie;
 Consigne consigne_couple;

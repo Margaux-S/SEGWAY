@@ -51,6 +51,7 @@ extern int etat_reception;
 extern int presence_user;
 extern int c;
 extern int etat_android;
+extern int androidou;
 
 typedef struct
 {
