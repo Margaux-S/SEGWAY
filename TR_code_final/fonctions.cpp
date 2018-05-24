@@ -31,7 +31,7 @@ void Asservissement(void *arg) /* OK */
 
                 android = etat_android;
                 
-
+                printf(" android avant com %d \n", android);
                 //rt_mutex_release(&var_mutex_etat_android);
                 //log_mutex_released(&var_mutex_etat_android);
              
@@ -54,7 +54,7 @@ void Asservissement(void *arg) /* OK */
 
 			rt_mutex_release(&var_mutex_etat_reception);
 			log_mutex_released(&var_mutex_etat_reception);
-
+                        
 			if(com) {
 				
 
