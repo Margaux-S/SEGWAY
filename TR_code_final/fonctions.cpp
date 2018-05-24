@@ -320,11 +320,11 @@ void Envoyer(void *arg){
 
 		if(m.label == 'c'){
 			send_float_to_serial(m.fval,'c');
-                        rt_printf("J'envoie une consigne %f au STM32 \n", m.fval);
+                        //rt_printf("J'envoie une consigne %f au STM32 \n", m.fval);
 		}
 		else if(m.label == 'a'){
 			send_int_to_serial(m.ival,'a');
-                        rt_printf("J'envoie arrêt au STM32 \n");
+                        //rt_printf("J'envoie arrêt au STM32 \n");
 		}
                 
                 
