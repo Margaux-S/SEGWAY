@@ -11,10 +11,11 @@ void Asservissement(void *arg) /* OK */
 {
 	float angle, vit_angulaire, c;
 	int com, android;
+	int uart0_filestream;
 
 	rt_printf("Thread Asservissement: Debut de l'exécution de periodique à 50 Hz\n");
 	rt_task_set_periodic(NULL, TM_NOW, 20000000);
-        
+
 	log_task_entered();
 	while (1) {
 	    //rt_printf("Thread Asservissement \n");
@@ -26,16 +27,15 @@ void Asservissement(void *arg) /* OK */
 		rt_mutex_release(&var_mutex_etat_com);
 		log_mutex_released(&var_mutex_etat_com);
                 
-                //rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
-                //log_mutex_acquired(&var_mutex_etat_android);
+                rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
+                log_mutex_acquired(&var_mutex_etat_android);
 
                 android = etat_android;
-                
-                printf(" android avant com %d \n", android);
-                //rt_mutex_release(&var_mutex_etat_android);
-                //log_mutex_released(&var_mutex_etat_android);
-             
 
+                rt_mutex_release(&var_mutex_etat_android);
+                log_mutex_released(&var_mutex_etat_android);
+             
+                printf("%d android \n", android);
 		if (com){
 
 			rt_mutex_acquire(&var_mutex_etat_angle, TM_INFINITE);
@@ -54,7 +54,7 @@ void Asservissement(void *arg) /* OK */
 
 			rt_mutex_release(&var_mutex_etat_reception);
 			log_mutex_released(&var_mutex_etat_reception);
-                        
+
 			if(com) {
 				
 
@@ -84,10 +84,10 @@ void Asservissement(void *arg) /* OK */
 				message_stm m;
 				m.label = 'c';
                                 m.fval = c;
-                                printf("%d \n", android);
                                 if (not(android)){
                                     err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
                                 }
+				//rt_sem_v(&var_sem_envoyer);
 			}
 		}
 	}
@@ -271,13 +271,13 @@ void Arret_Urgence(void *arg){
 		rt_sem_p(&var_sem_arret,TM_INFINITE);
 		log_sem_entered(&var_sem_arret);
 
-               /* rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
+                rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
 		log_mutex_acquired(&var_mutex_etat_android);
-*/
+
 		android = etat_android;
-/*
+
 		rt_mutex_release(&var_mutex_etat_android);
-		log_mutex_released(&var_mutex_etat_android);*/
+		log_mutex_released(&var_mutex_etat_android);
                 
 		rt_mutex_acquire(&var_mutex_arret, TM_INFINITE);
 		log_mutex_acquired(&var_mutex_arret);
@@ -308,7 +308,7 @@ void Envoyer(void *arg){
 	rt_task_set_periodic(NULL, TM_NOW, 10000000);
 
 	log_task_entered();
-        int android;
+
 	while(1){
 		//rt_printf("Thread Envoyer \n");
 		rt_task_wait_period(NULL);
@@ -316,28 +316,27 @@ void Envoyer(void *arg){
 		message_stm m;
 		int err = rt_queue_read(&queue_Msg2STM,&m,sizeof(message_stm),SECENTOP / 10000);
                 
-                if(m.label == 'c'){
-                        send_float_to_serial(m.fval,'c');
+                
+
+		if(m.label == 'c'){
+			send_float_to_serial(m.fval,'c');
                         rt_printf("J'envoie une consigne %f au STM32 \n", m.fval);
-                }
-                else if(m.label == 'a'){
-                        send_int_to_serial(m.ival,'a');
+		}
+		else if(m.label == 'a'){
+			send_int_to_serial(m.ival,'a');
                         rt_printf("J'envoie arrêt au STM32 \n");
-                }
+		}
+                
                 
 
 		/*log_sem_waiting(&var_sem_envoyer);
 		rt_sem_p(&var_sem_envoyer,TM_INFINITE);
 		log_sem_entered(&var_sem_envoyer);
-
 		rt_mutex_acquire(&var_mutex_consigne_couple, TM_INFINITE);
 		log_mutex_acquired(&var_mutex_consigne_couple);
-
 		send_float_to_serial(consigne_couple.consigne(),'c');
-
 		rt_mutex_release(&var_mutex_consigne_couple);
 		log_mutex_released(&var_mutex_consigne_couple);
-
 		rt_mutex_acquire(&var_mutex_arret, TM_INFINITE);
 		log_mutex_acquired(&var_mutex_arret);
 		if(arret){
@@ -469,11 +468,9 @@ void Communication_Android (void *arg){
     } else{
         rt_printf("bind done\n");
     }
-    //Listen
-    listen(socket_desc , 1);
-    
     while (1){
-        
+        //Listen
+        listen(socket_desc , 30);
 
         //Accept and incoming connection
         rt_printf("Waiting for incoming connections...\n");
@@ -489,13 +486,13 @@ void Communication_Android (void *arg){
         }
         
 
-        //rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
-        //log_mutex_acquired(&var_mutex_etat_android);
+        rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
+        log_mutex_acquired(&var_mutex_etat_android);
 
         etat_android = 1;
 
-        //rt_mutex_release(&var_mutex_etat_android);
-        //log_mutex_released(&var_mutex_etat_android);
+        rt_mutex_release(&var_mutex_etat_android);
+        log_mutex_released(&var_mutex_etat_android);
         int MAX_SIZE = 100;
         int i, len;
         int noerror = 0;
@@ -543,7 +540,7 @@ void Communication_Android (void *arg){
                     int err=0;
                     
                     message_stm m;
-                    m.label = 'd';
+                    m.label = 'c';
                     if (noerror){
                         noerror = 0;
                         m.fval = c+0.1;
@@ -563,19 +560,12 @@ void Communication_Android (void *arg){
             {
                 printf("recv failed\n");
             }
-            //rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
-            //log_mutex_acquired(&var_mutex_etat_android);
+            rt_mutex_acquire(&var_mutex_etat_android, TM_INFINITE);
+            log_mutex_acquired(&var_mutex_etat_android);
 
             etat_android = 0;
 
-            //rt_mutex_release(&var_mutex_etat_android);
-            //log_mutex_released(&var_mutex_etat_android);
+            rt_mutex_release(&var_mutex_etat_android);
+            log_mutex_released(&var_mutex_etat_android);
         }
 }
-    
-        
-     
-    
-
-
-
