@@ -527,7 +527,11 @@ void Communication_Android (void *arg){
                         m.fval = c;
                     }
                     err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
-                    
+                    /*
+                    message_stm d;
+                    d.label = 'd';
+                    d.fval = angle;
+                    err = rt_queue_write(&queue_Msg2STM,&d,sizeof(message_stm),Q_NORMAL);*/
                 } //if taille*/    
             } //while 
             if(len <= 0)
