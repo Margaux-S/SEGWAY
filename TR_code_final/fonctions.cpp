@@ -10,7 +10,7 @@
 void Asservissement(void *arg) /* OK */
 {
 	float angle, vit_angulaire, c;
-	int com, android;
+	int com;
 	int uart0_filestream;
 
 	rt_printf("Thread Asservissement: Debut de l'exécution de periodique à 50 Hz\n");
@@ -74,7 +74,7 @@ void Asservissement(void *arg) /* OK */
 				message_stm m;
 				m.label = 'c';
                                 m.fval = c;
-                                if (not(androidou)){
+                                if (not(android)){
                                     err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
                                 }
 				//rt_sem_v(&var_sem_envoyer);
@@ -252,7 +252,6 @@ void Communication(void *arg)
 void Arret_Urgence(void *arg){
 
 	log_task_entered();
-        int android;
         
 	while(1){
 		//rt_printf("Thread Arret \n");
@@ -274,7 +273,7 @@ void Arret_Urgence(void *arg){
 		m.label = 'a';
 		m.ival = 1;
                 
-                if (not(androidou)){
+                if (not(android)){
                     err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
                 }
 		/*log_sem_signaled(&var_sem_envoyer);
@@ -307,7 +306,9 @@ void Envoyer(void *arg){
 		else if(m.label == 'a'){
 			send_int_to_serial(m.ival,'a');
                         //rt_printf("J'envoie arrêt au STM32 \n");
-		}
+		} else if (m.label == 'd'){
+                    send_float_to_serial(m.fval,'d');
+                }
                 
                 
 
@@ -451,10 +452,10 @@ void Communication_Android (void *arg){
         rt_printf("bind done\n");
     }
     while (1){
-        androidou = 0;
+        android = 0;
           
         //Listen
-        listen(socket_desc , 30);
+        listen(socket_desc , 1);
 
         //Accept and incoming connection
         rt_printf("Waiting for incoming connections...\n");
@@ -468,7 +469,7 @@ void Communication_Android (void *arg){
         } else {
             rt_printf("Connection accepted\n");
         }
-        androidou = 1;
+        android = 1;
 
        
         int MAX_SIZE = 100;
@@ -514,7 +515,7 @@ void Communication_Android (void *arg){
                         if (!sens){
                             puissance = -puissance;
                         }
-                    float c = puissance*4;
+                    float c = puissance*6;
                     int err=0;
                     
                     message_stm m;
@@ -527,19 +528,21 @@ void Communication_Android (void *arg){
                         m.fval = c;
                     }
                     err = rt_queue_write(&queue_Msg2STM,&m,sizeof(message_stm),Q_NORMAL);
-                    /*
+                    
                     message_stm d;
                     d.label = 'd';
                     d.fval = angle;
-                    err = rt_queue_write(&queue_Msg2STM,&d,sizeof(message_stm),Q_NORMAL);*/
+                    err = rt_queue_write(&queue_Msg2STM,&d,sizeof(message_stm),Q_NORMAL);
                 } //if taille*/    
             } //while 
             if(len <= 0)
             {
+                android = 0;
                 rt_printf("Client disconnected\n");
             }
             else if(len == -1)
             {
+                android = 0;
                 rt_printf("recv failed\n");
             }
             
