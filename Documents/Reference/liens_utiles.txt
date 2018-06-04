@@ -1,0 +1,32 @@
+Communication STM32 - USART (1):
+http://embedded-lab.com/blog/stm32-serial-communication/
+
+Communication STM32 - USART (2):
+http://www.framboise314.fr/le-port-serie-du-raspberry-pi-3-pas-simple/#Le_port_serie_du_Raspberry_Pi_3_la_cata
+
+Fusion d'angle:
+http://www.mouser.fr/applications/sensor_solutions_mems/
+
+Systick:
+http://www.micromouseonline.com/2016/02/02/systick-configuration-made-easy-on-the-stm32/
+
+Boucle courant:
+http://www.lesia.insa-toulouse.fr/~acco/acco_wiki/lib/exe/fetch.php?media=hard:4ae_chaine_acq:2009_10:dossiersupport_2009_2010.pdf
+
+Effets inductance moteur
+http://doc.ingeniamc.com/wiki/motion-wiki/motor-inductance-effects-on-servo-drives
+
+Interface graphique librairies affichage avance
+https://packages.debian.org/fr/jessie/libs/libgtkdatabox-0.9.2-0-glade
+
+Mettre a jour valeurs TextView dans GTK+:
+https://stackoverflow.com/questions/39556006/how-can-i-update-a-gtk-textview-from-events-from-a-different-thread
+
+
+http://zetcode.com/gui/gtk2/gtkevents/
+
+https://stackoverflow.com/questions/30607429/gtk3-and-multithreading-replacing-deprecated-functions
+
+https://stackoverflow.com/questions/42356126/gtk-glade-event-handler-that-recursively-fires-after-a-set-period-of-time-c
+
+-x option en ssh pour afficher toutes les fenetres qui s'affichent aussi sur la cible
