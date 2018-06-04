@@ -1,0 +1,4 @@
+-c --cpu Cortex-M4.fp -D__EVAL -D__MICROLIB --li -g -O3 --apcs=interwork --split_sections -I.\..\ -I.\..\..\..\Libraries\CMSIS\Device\ST\STM32F30x\Include -I.\..\..\..\Libraries\STM32F30x_StdPeriph_Driver\inc -I.\..\..\..\Libraries\STM32_USB-FS-Device_Driver\inc -I..\..\..\Libraries\STM32F0_malib\inc -I..\..\..\Libraries\Utilities\STM32F3_Discovery -I..\Service 
+-I C:\Keil\ARM\RV31\INC 
+-I C:\Keil\ARM\CMSIS\Include 
+-DUSE_STDPERIPH_DRIVER -DSTM32F30X -o ".\Segway\stm32f0xx_lcd.o" --omf_browse ".\Segway\stm32f0xx_lcd.crf" --depend ".\Segway\stm32f0xx_lcd.d" "..\..\..\Libraries\STM32F0_malib\src\stm32f0xx_lcd.c"

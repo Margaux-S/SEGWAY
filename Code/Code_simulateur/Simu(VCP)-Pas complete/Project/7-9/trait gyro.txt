@@ -1,0 +1,92 @@
+	unsigned char *tampon_char;
+	int *Status;
+	
+	/************************************************************************************************************************************/
+	
+	Gyro_read(Buffer);												// Read Gyro Angular data 
+	Acc_read(AccBuffer);  										// Read Accelero 
+	AccBuffer[0] = AccBuffer[0] + ZeroACCX;		// compensation offset axe X A figer 		
+	
+	// angle calcul accelero		
+	AccBuffer[2] = ABS (AccBuffer[2]);				// Acceleration z ne peut etre négative sur gyropode phase change de signe 
+	
+	//	calcul angle a patir de AccX et AccZ	
+ 	Angleacc  =-atan (AccBuffer[0]/AccBuffer[2])*180.0f/PI ;// - atan( AccX/AccZ)X 180/PI
+
+	//Mesure Angle + filtrage complémentaire en °
+	Anglemesure	= 0.98f *(Anglemesure	+	(Deltatps * (Zerogyro+Buffer[0])))	+0.02f*Angleacc;//0.98 + 0.02 = 1
+	
+	if ((Anglemesure < -13.5f) || (Anglemesure > 13.5f)) secu = true;
+	
+	tampon_char=(unsigned char*)&Anglemesure;
+	
+	//Envoie de message de label p, position angulaire
+	TX_USART [0] = '<';
+	TX_USART [1] = 'p';
+	TX_USART [2] = tampon_char[0];		
+	TX_USART [3] = tampon_char[1];		
+	TX_USART [4] = tampon_char[2];		
+	TX_USART [5] = tampon_char[3];		
+	TX_USART [6] = '\n';	
+	
+	VitesseAngle = (Zerogyro+Buffer[0]);			
+	tampon_char=(unsigned char*)&VitesseAngle;
+	
+	//Envoie de message de label s, vitesse angulaire
+	TX_USART [7] = '<';
+	TX_USART [8] = 's';
+	TX_USART [9] =  tampon_char[0];		
+	TX_USART [10] = tampon_char[1];		
+	TX_USART [11] = tampon_char[2];		
+	TX_USART [12] = tampon_char[3];		
+	TX_USART [13] = '\n';
+	
+	// Mesure tension batterie PC3 MOY_ADC12_IN9 et Tension bat divisée par 19 en mV 
+	ADC1ConvertedValue =  MOY_ADC12_IN9;
+	ADC1ConvertedVoltage = (ADC1ConvertedValue *ScaleADC)/0xFFF;
+	 
+	tampon_char=(unsigned char*)ADC1ConvertedVoltage;
+	
+	//Envoie de message de label b, niveau de batterie
+	TX_USART [14] = '<';
+	TX_USART [15] = 'b';
+	TX_USART [16] = tampon_char[0];		
+	TX_USART [17] = tampon_char[1];		
+	TX_USART [18] = tampon_char[2];		
+	TX_USART [19] = tampon_char[3];		
+	TX_USART [20] = '\n';
+	
+	//calcul vitesse lineaire à faire (float VitesseLineaire)
+	
+	//tampon_char=(unsigned char*)&VitesseLineaire;
+	tampon_char = (unsigned char*) 1234;
+	//Envoie de message de label v, vitesse 
+	TX_USART [21] = '<';
+	TX_USART [22] = 'v';
+	TX_USART [23] = tampon_char[0];		
+	TX_USART [24] = tampon_char[1];		
+	TX_USART [25] = tampon_char[2];		
+	TX_USART [26] = tampon_char[3];		
+	TX_USART [27] = '\n';	
+	
+	//Envoie de message de label t, Status
+	*Status = 1;
+	TX_USART [28] = '<';
+	TX_USART [29] = 't';
+	TX_USART [30] = Status[0];		
+	TX_USART [30] = Status[1];		
+	TX_USART [32] = Status[2];		
+	TX_USART [33] = Status[3];		
+	TX_USART [34] = '\n';		
+	TX_USART [35]= '\r';//RC
+
+	//	Envoi DMA TX USART2 
+	DMA_Cmd(DMA1_Channel7, DISABLE);													// 	Arret
+	DMA_SetCurrDataCounter(DMA1_Channel7, sizeof(TX_USART));	//	Mise au depart pointeur sur Buffer en arret DMA
+	DMA_Cmd(DMA1_Channel7, ENABLE);														//	Start envoi buffer 
+
+	STM_EVAL_LEDOff(LED10);//Test fin de calcul
+	
+	
+	/*************************************************************************************************************************************/
+}

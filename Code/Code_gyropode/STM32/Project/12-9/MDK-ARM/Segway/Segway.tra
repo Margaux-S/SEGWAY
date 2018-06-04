@@ -1,0 +1,50 @@
+*** Creating Trace Output File '.\Segway\Segway.tra' Ok.
+### Preparing for ADS-LD.
+### Creating ADS-LD Command Line
+### List of Objects: adding '".\segway\startup_stm32f30x.o"'
+### List of Objects: adding '".\segway\stm32f3_discovery.o"'
+### List of Objects: adding '".\segway\stm32f3_discovery_l3gd20.o"'
+### List of Objects: adding '".\segway\stm32f3_discovery_lsm303dlhc.o"'
+### List of Objects: adding '".\segway\stm32f30x_adc.o"'
+### List of Objects: adding '".\segway\stm32f30x_can.o"'
+### List of Objects: adding '".\segway\stm32f30x_comp.o"'
+### List of Objects: adding '".\segway\stm32f30x_crc.o"'
+### List of Objects: adding '".\segway\stm32f30x_dac.o"'
+### List of Objects: adding '".\segway\stm32f30x_dbgmcu.o"'
+### List of Objects: adding '".\segway\stm32f30x_dma.o"'
+### List of Objects: adding '".\segway\stm32f30x_exti.o"'
+### List of Objects: adding '".\segway\stm32f30x_flash.o"'
+### List of Objects: adding '".\segway\stm32f30x_gpio.o"'
+### List of Objects: adding '".\segway\stm32f30x_i2c.o"'
+### List of Objects: adding '".\segway\stm32f30x_iwdg.o"'
+### List of Objects: adding '".\segway\stm32f30x_misc.o"'
+### List of Objects: adding '".\segway\stm32f30x_opamp.o"'
+### List of Objects: adding '".\segway\stm32f30x_pwr.o"'
+### List of Objects: adding '".\segway\stm32f30x_rcc.o"'
+### List of Objects: adding '".\segway\stm32f30x_rtc.o"'
+### List of Objects: adding '".\segway\stm32f30x_spi.o"'
+### List of Objects: adding '".\segway\stm32f30x_syscfg.o"'
+### List of Objects: adding '".\segway\stm32f30x_tim.o"'
+### List of Objects: adding '".\segway\stm32f30x_usart.o"'
+### List of Objects: adding '".\segway\stm32f30x_wwdg.o"'
+### List of Objects: adding '".\segway\main.o"'
+### List of Objects: adding '".\segway\stm32f30x_it.o"'
+### List of Objects: adding '".\segway\system_stm32f30x.o"'
+### List of Objects: adding '".\segway\init.o"'
+### List of Objects: adding '".\segway\gyroscope.o"'
+### List of Objects: adding '".\segway\fonctions.o"'
+### List of Objects: adding '".\segway\accelerometre.o"'
+### ADS-LD Command completed:
+--cpu Cortex-M4.fp ".\segway\startup_stm32f30x.o" ".\segway\stm32f3_discovery.o" ".\segway\stm32f3_discovery_l3gd20.o" ".\segway\stm32f3_discovery_lsm303dlhc.o" ".\segway\stm32f30x_adc.o" ".\segway\stm32f30x_can.o" ".\segway\stm32f30x_comp.o" ".\segway\stm32f30x_crc.o" ".\segway\stm32f30x_dac.o" ".\segway\stm32f30x_dbgmcu.o" ".\segway\stm32f30x_dma.o" ".\segway\stm32f30x_exti.o" ".\segway\stm32f30x_flash.o" ".\segway\stm32f30x_gpio.o" ".\segway\stm32f30x_i2c.o" ".\segway\stm32f30x_iwdg.o" ".\segway\stm32f30x_misc.o" ".\segway\stm32f30x_opamp.o" ".\segway\stm32f30x_pwr.o" ".\segway\stm32f30x_rcc.o" ".\segway\stm32f30x_rtc.o" ".\segway\stm32f30x_spi.o" ".\segway\stm32f30x_syscfg.o" ".\segway\stm32f30x_tim.o" ".\segway\stm32f30x_usart.o" ".\segway\stm32f30x_wwdg.o" ".\segway\main.o" ".\segway\stm32f30x_it.o" ".\segway\system_stm32f30x.o" ".\segway\init.o" ".\segway\gyroscope.o" ".\segway\fonctions.o" ".\segway\accelerometre.o" 
+--library_type=microlib --strict --scatter ".\Segway\Segway.sct" 
+--summary_stderr --info summarysizes -o .\Segway\Segway.axf### Preparing Environment (PrepEnvAds)
+### ADS-LD Output File: '.\Segway\Segway.axf'
+### ADS-LD Command File: '.\Segway\Segway.lnp'
+### Checking for dirty Components...
+### Creating CmdFile '.\Segway\Segway.lnp', Handle=0x000005EC
+### Writing '.lnp' file
+### ADS-LD Command file '.\Segway\Segway.lnp' is ready.
+### ADS-LD: About to start ADS-LD Thread.
+### ADS-LD: executed with 0 errors
+### Updating obj list
+### LDADS_file() completed.
